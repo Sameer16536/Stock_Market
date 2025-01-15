@@ -2,6 +2,23 @@ import React, { useState } from "react";
 import StockList from "../component/StockList"
 import StockChart from "../component/StockChart";
 import StockMultiLineChart from "../component/StockMultiLineChart";
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+// import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import {Link} from 'react-router-dom'
+
+
+const pages = ['Home', 'Live Stocks', 'Penny Stocks','Guide','SIP'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const mockChartData = [
     { time: "09:00 AM", price: 300.5 },
@@ -124,10 +141,10 @@ const stocks = [
         change: "+0.3%",
         data: [
             { time: "09:00 AM", price: 3045 },
-            { time: "10:00 AM", price: 3050 },
-            { time: "11:00 AM", price: 3060 },
+            { time: "10:00 AM", price: 3150 },
+            { time: "11:00 AM", price: 3260 },
             { time: "12:00 PM", price: 3058 },
-            { time: "01:00 PM", price: 3055 },
+            { time: "01:00 PM", price: 3555 },
         ],
     },
     {
@@ -171,12 +188,154 @@ const Home = () => {
         setSelectedStock(stockName);
         setChartView("single");
     };
+    const [anchorElNav, setAnchorElNav] =useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event:MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <header className="bg-blue-600 text-white p-4 text-center font-bold text-xl">
-                Real-Time Stock Tracker
-            </header>
+            <AppBar position="static">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="#app-bar-with-responsive-menu"
+            sx={{
+              mr: 92,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            Real Time Stocks
+          </Typography>
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              {/* <MenuIcon /> */}
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{ display: { xs: 'block', md: 'none' } }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="#app-bar-with-responsive-menu"
+            sx={{
+              mr: 2,
+              display: { xs: 'flex', md: 'none' },
+              flexGrow: 1,
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            LOGO
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                            {pages.map((page) => {
+                                const path =
+                                    page === 'Home'
+                                        ? '/' // Special case for "Home"
+                                        : `/${page.toLowerCase().replace(/\s+/g, '-')}`; // Dynamically generate other paths
+
+
+                                return (
+                                    <Button
+                                        key={page}
+                                        component={Link}
+                                        to={path}
+                                        onClick={handleCloseNavMenu}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        {page}
+                                    </Button>
+                                );
+                            })}
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
             <main className="p-4">
                 <button
                     onClick={handleSwitch}
