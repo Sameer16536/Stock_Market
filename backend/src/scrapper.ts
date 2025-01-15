@@ -1,6 +1,7 @@
 import { chromium } from 'playwright';
 import { writeJSON } from 'fs-extra';
 import path from 'path';
+import { write } from 'fs';
 
 const OUTPUT_FILE = path.resolve(__dirname, 'nse_stock_data.json');
 
@@ -12,6 +13,16 @@ interface StockData {
   timestamp: string;
 }
 
+
+interface TopLabelsData {
+  symbol: string;
+  ltp: number; // Last Traded Price
+  percentageChange: number; // % change
+  timestamp: string;
+}
+
+
+
 async function scrapeNSEIndia() {
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
@@ -21,8 +32,9 @@ async function scrapeNSEIndia() {
     await page.goto('https://www.nseindia.com', { timeout: 60000 });
 
     // Wait for the gainers and losers tables to load
-    await page.waitForSelector('.gainers tbody tr', { timeout: 30000 });
-    await page.waitForSelector('.loosers tbody tr', { timeout: 30000 });
+    await page.waitForSelector('.gainers tbody tr', { timeout: 60000 });
+    await page.waitForSelector('.loosers tbody tr', { timeout: 60000 });
+    await page.waitForSelector('.tabs_boxes .nav_tabs', { timeout: 60000 });
 
     // Scrape stock data from the Gainers table
     const gainers: StockData[] = await page.$$eval('.gainers tbody tr', (rows) =>
@@ -50,9 +62,24 @@ async function scrapeNSEIndia() {
       })
     );
 
-    const stocks = { gainers, losers };
+    const tabsData: TopLabelsData[] = await page.$$eval('.tabs_boxes .nav_tabs', (tabs) =>
+      tabs.map((tab) => {
+        const symbol = tab.querySelector('.tb_name')?.textContent?.trim() || 'N/A';
+        const ltpText = tab.querySelector('.tb_val')?.textContent?.replace(',', '').trim() || '0';
+        const percentageChangeText = tab.querySelector('.tb_per')?.textContent?.match(/([-+]?\d*\.?\d+)/)?.[0] || '0';
+        return {
+          symbol,
+          ltp: parseFloat(ltpText),
+          percentageChange: parseFloat(percentageChangeText),
+          timestamp: new Date().toISOString(),
+        };
+      }))
 
-    console.log('Scraped data:', stocks);
+    console.log('Tabs Data:', tabsData)
+    const labels = tabsData
+    const stocks = { gainers, losers, tabsData };
+
+    // console.log('Scraped data:', stocks);
 
     // Save scraped data to a JSON file
     await writeJSON(OUTPUT_FILE, stocks, { spaces: 2 });
