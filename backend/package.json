@@ -18,7 +18,10 @@
   },
   "dependencies": {
     "@types/node": "^22.10.6",
+    "@types/redis": "^4.0.11",
+    "ioredis": "^5.4.2",
     "playwright": "^1.49.1",
+    "redis": "^4.7.0",
     "ts-node": "^10.9.2"
   }
 }

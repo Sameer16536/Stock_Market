@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import { writeJSON } from 'fs-extra';
 import path from 'path';
-import { write } from 'fs';
+import { storeInRedis } from './redis';
 
 const OUTPUT_FILE = path.resolve(__dirname, 'nse_stock_data.json');
 
@@ -28,7 +28,7 @@ interface IndexData {
 }
 
 
-async function scrapeNSEIndia() {
+export async function scrapeNSEIndia() {
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
 
@@ -89,6 +89,10 @@ async function scrapeNSEIndia() {
     // Save scraped data to a JSON file
     await writeJSON(OUTPUT_FILE, stocks, { spaces: 2 });
     console.log(`Data saved to ${OUTPUT_FILE}`);
+    //Store the data in Redis
+    await storeInRedis('nse:gainers', gainers);
+    await storeInRedis('nse:losers', losers);
+    await storeInRedis('nse:indices', indicesData);
   } catch (error) {
     console.error('Error during scraping:', error);
   } finally {
@@ -96,7 +100,7 @@ async function scrapeNSEIndia() {
   }
 }
 
-// Run the scraper
-scrapeNSEIndia()
-  .then(() => console.log('Scraping completed successfully.'))
-  .catch((error) => console.error('Scraper encountered an error:', error));
+// // Run the scraper
+// scrapeNSEIndia()
+//   .then(() => console.log('Scraping completed successfully.'))
+//   .catch((error) => console.error('Scraper encountered an error:', error));
