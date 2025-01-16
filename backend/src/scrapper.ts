@@ -20,7 +20,12 @@ interface TopLabelsData {
   percentageChange: number; // % change
   timestamp: string;
 }
-
+interface IndexData {
+  symbol: string; // Index name
+  ltp: number; // Last Traded Price
+  percentageChange: string; // % change (raw text including both value and %)
+  timestamp: string; // Timestamp of the scrape
+}
 
 
 async function scrapeNSEIndia() {
@@ -31,10 +36,9 @@ async function scrapeNSEIndia() {
     // Navigate to the NSE India homepage
     await page.goto('https://www.nseindia.com', { timeout: 60000 });
 
-    // Wait for the gainers and losers tables to load
     await page.waitForSelector('.gainers tbody tr', { timeout: 60000 });
     await page.waitForSelector('.loosers tbody tr', { timeout: 60000 });
-    await page.waitForSelector('.tabs_boxes .nav_tabs', { timeout: 60000 });
+    await page.waitForSelector('.nav.nav-tabs', { timeout: 60000 });
 
     // Scrape stock data from the Gainers table
     const gainers: StockData[] = await page.$$eval('.gainers tbody tr', (rows) =>
@@ -62,24 +66,25 @@ async function scrapeNSEIndia() {
       })
     );
 
-    const tabsData: TopLabelsData[] = await page.$$eval('.tabs_boxes .nav_tabs', (tabs) =>
-      tabs.map((tab) => {
-        const symbol = tab.querySelector('.tb_name')?.textContent?.trim() || 'N/A';
-        const ltpText = tab.querySelector('.tb_val')?.textContent?.replace(',', '').trim() || '0';
-        const percentageChangeText = tab.querySelector('.tb_per')?.textContent?.match(/([-+]?\d*\.?\d+)/)?.[0] || '0';
-        return {
-          symbol,
-          ltp: parseFloat(ltpText),
-          percentageChange: parseFloat(percentageChangeText),
-          timestamp: new Date().toISOString(),
-        };
-      }))
+   // Scrape index data from the `.nav-tabs` container
+   const indicesData: IndexData[] = await page.$$eval('.nav.nav-tabs .nav-item', (tabs) =>
+    tabs.map((tab) => {
+      const symbol =
+        tab.querySelector('.tb_name')?.textContent?.trim() || 'N/A'; // Index name
+      const ltpText =
+        tab.querySelector('.tb_val')?.textContent?.replace(',', '').trim() ||
+        '0'; // Last Traded Price
+      const percentageChange =
+        tab.querySelector('.tb_per')?.textContent?.trim() || 'N/A'; // % Change
+      const ltp = parseFloat(ltpText.split(' ')[0]); // Extract numerical value of LTP
+      const timestamp = new Date().toISOString(); // Timestamp
+      return { symbol, ltp, percentageChange, timestamp };
+    })
+  );
 
-    console.log('Tabs Data:', tabsData)
-    const labels = tabsData
-    const stocks = { gainers, losers, tabsData };
+  console.log('Indices Data:', indicesData);
 
-    // console.log('Scraped data:', stocks);
+    const stocks = { gainers, losers, indicesData };
 
     // Save scraped data to a JSON file
     await writeJSON(OUTPUT_FILE, stocks, { spaces: 2 });
