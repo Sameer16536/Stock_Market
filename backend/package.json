@@ -12,14 +12,18 @@
   "devDependencies": {
     "@types/amqplib": "^0.10.6",
     "@types/fs-extra": "^11.0.4",
+    "@types/node-cron": "^3.0.11",
+    "@types/nodemon": "^1.19.6",
     "amqplib": "^0.10.5",
     "fs-extra": "^11.2.0",
+    "nodemon": "^3.1.9",
     "typescript": "^5.7.3"
   },
   "dependencies": {
     "@types/node": "^22.10.6",
     "@types/redis": "^4.0.11",
     "ioredis": "^5.4.2",
+    "node-cron": "^3.0.3",
     "playwright": "^1.49.1",
     "redis": "^4.7.0",
     "ts-node": "^10.9.2"
