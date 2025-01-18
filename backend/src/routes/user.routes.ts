@@ -1,8 +1,8 @@
-import express from 'express';
+import express from "express";
+import { registerUser } from "../controllers/user.controller";
+
 const router = express.Router();
+// @ts-ignore
+router.post("/register", registerUser);
 
-
-router.post('/register', (req, res) => {});
-router.post('/login', (req, res) => {});
-router.get('/logout', (req, res) => {});
-router.get('/profile', (req, res) => {});
+export default router;
