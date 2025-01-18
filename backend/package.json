@@ -12,6 +12,7 @@
   "devDependencies": {
     "@types/amqplib": "^0.10.6",
     "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.10.7",
