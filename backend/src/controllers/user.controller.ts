@@ -42,3 +42,8 @@ export const registerUser = async (
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+export const loginUser = async (req:Request, res:Response, next:NextFunction) => {}
+export const logoutUser = async (req:Request, res:Response, next:NextFunction) => {}
+export const getUserProfile = async (req:Request, res:Response, next:NextFunction) => {}
