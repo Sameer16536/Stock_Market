@@ -16,6 +16,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/fs-extra": "^11.0.4",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.7",
     "@types/node-cron": "^3.0.11",
     "@types/nodemon": "^1.19.6",
