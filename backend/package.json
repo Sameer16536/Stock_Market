@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"node ./dist/server.js\" \"node ./dist/scrapper/cronJob.js\""
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "@types/node-cron": "^3.0.11",
     "@types/nodemon": "^1.19.6",
     "amqplib": "^0.10.5",
+    "concurrently": "^9.1.2",
     "fs-extra": "^11.2.0",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
@@ -29,6 +31,7 @@
   "dependencies": {
     "@prisma/client": "^6.2.1",
     "@types/redis": "^4.0.11",
+    "@types/ws": "^8.5.13",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -41,6 +44,7 @@
     "playwright": "^1.49.1",
     "prisma": "^6.2.1",
     "redis": "^4.7.0",
+    "ws": "^8.18.0",
     "zod": "^3.24.1"
   }
 }
