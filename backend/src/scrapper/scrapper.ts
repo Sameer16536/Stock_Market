@@ -57,9 +57,15 @@ export async function scrapeNSEIndia() {
         const percentageChange = parseFloat(cells[2]?.textContent?.replace('%', '').trim() || '0');
         const volume = parseInt(cells[3]?.textContent?.replace(/,/g, '') || '0', 10); // Volume traded
         const timestamp = new Date().toISOString();
+       
+        if (symbol === 'N/A' || isNaN(ltp)) {
+          return null; // Invalid data, return null
+        }
+    
         return { symbol, ltp, percentageChange, volume, timestamp };
-      })
-    );
+      }).filter((stock) => stock !== null) // Filter out null values
+    ) as StockData[]; 
+    
 
     // Scrape stock data from the Losers table
     const losers: StockData[] = await page.$$eval('.loosers tbody tr', (rows) =>
@@ -70,9 +76,14 @@ export async function scrapeNSEIndia() {
         const percentageChange = parseFloat(cells[2]?.textContent?.replace('%', '').trim() || '0');
         const volume = parseInt(cells[3]?.textContent?.replace(/,/g, '') || '0', 10); // Volume traded
         const timestamp = new Date().toISOString();
+        
+        if (symbol === 'N/A' || isNaN(ltp)) {
+          return null; // Invalid data, return null
+        }
+    
         return { symbol, ltp, percentageChange, volume, timestamp };
-      })
-    );
+      }).filter((stock) => stock !== null) // Filter out null values
+    ) as StockData[]; 
 
    // Scrape index data from the `.nav-tabs` container
    const indicesData: IndexData[] = await page.$$eval('.nav.nav-tabs .nav-item', (tabs) =>
@@ -86,9 +97,15 @@ export async function scrapeNSEIndia() {
         tab.querySelector('.tb_per')?.textContent?.trim() || 'N/A'; // % Change
       const ltp = parseFloat(ltpText.split(' ')[0]); // Extract numerical value of LTP
       const timestamp = new Date().toISOString(); // Timestamp
+      
+   
+      if (symbol === 'N/A' || isNaN(ltp)) {
+        return null; // Invalid data, return null
+      }
+  
       return { symbol, ltp, percentageChange, timestamp };
-    })
-  );
+    }).filter((stock) => stock !== null) // Filter out null values
+  ) as IndexData[]; 
 
 
     const stocks = { gainers, losers, indicesData };
@@ -108,6 +125,6 @@ export async function scrapeNSEIndia() {
 }
 
 // // Run the scraper
-// scrapeNSEIndia()
+scrapeNSEIndia()
 //   .then(() => console.log('Scraping completed successfully.'))
 //   .catch((error) => console.error('Scraper encountered an error:', error));

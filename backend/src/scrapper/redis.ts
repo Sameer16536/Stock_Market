@@ -10,6 +10,7 @@ export async function storeInRedis(key: string, data: any):Promise<void> {
     const scrappedData = JSON.stringify(data);
     //Store the data in Redis
     await redis.set(key, scrappedData);
+    await redis.publish('nse:stock-updates', scrappedData); // Publish the update to the Redis Pub/Sub channel
     console.log(`Data stored in Redis with key: ${key}`);
   } catch (error) {
     console.error(error);
