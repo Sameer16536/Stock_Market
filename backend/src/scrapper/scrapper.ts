@@ -3,7 +3,7 @@ import { writeJSON } from 'fs-extra';
 import path from 'path';
 import { storeInRedis } from './redis';
 
-const OUTPUT_FILE = path.resolve(__dirname, 'nse_stock_data.json');
+const OUTPUT_FILE = path.resolve(__dirname, '../nse_stock_data.json');
 
 interface StockData {
   symbol: string;
@@ -14,7 +14,7 @@ interface StockData {
 }
 
 
-interface TopLabelsData {
+interface TopLabelsData { 
   symbol: string;
   ltp: number; // Last Traded Price
   percentageChange: number; // % change
@@ -31,14 +31,22 @@ interface IndexData {
 export async function scrapeNSEIndia() {
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
-
+  await page.route('**/*', (route) => {
+    if (['image', 'stylesheet', 'font'].includes(route.request().resourceType())) {
+      route.abort();
+    } else {
+      route.continue();
+    }
+  });
   try {
     // Navigate to the NSE India homepage
-    await page.goto('https://www.nseindia.com', { timeout: 60000 });
+    await page.goto('https://www.nseindia.com', { timeout: 30000 });
 
-    await page.waitForSelector('.gainers tbody tr', { timeout: 60000 });
-    await page.waitForSelector('.loosers tbody tr', { timeout: 60000 });
-    await page.waitForSelector('.nav.nav-tabs', { timeout: 60000 });
+    await Promise.all([
+      page.waitForSelector('.gainers tbody tr'),
+      page.waitForSelector('.loosers tbody tr'),
+      page.waitForSelector('.nav.nav-tabs'),
+    ]);
 
     // Scrape stock data from the Gainers table
     const gainers: StockData[] = await page.$$eval('.gainers tbody tr', (rows) =>
@@ -82,7 +90,6 @@ export async function scrapeNSEIndia() {
     })
   );
 
-  console.log('Indices Data:', indicesData);
 
     const stocks = { gainers, losers, indicesData };
 
