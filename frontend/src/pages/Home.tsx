@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StockList from "../component/StockList"
 import StockChart from "../component/StockChart";
 import StockMultiLineChart from "../component/StockMultiLineChart";
@@ -14,7 +14,9 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import {Link} from 'react-router-dom'
+import { Modal } from "@mui/material";
+import {Link, useNavigate} from 'react-router-dom'
+import NavBar from "../component/Navbar";
 
 
 const pages = ['Home', 'Live Stocks', 'Penny Stocks','Guide','SIP'];
@@ -179,7 +181,10 @@ const stocks = [
 
 const Home = () => {
     const [selectedStock, setSelectedStock] = useState<string | null>(null);
-    const [chartView, setChartView] = useState<"single" | "multi">("multi")
+  const [chartView, setChartView] = useState<"single" | "multi">("multi")
+  const [isLoggedIn,setIsLoggedIn] = useState<boolean | null>(false)
+  const [showModal, setShowModal] = useState<boolean | null>(false)
+  const navigate = useNavigate()
 
     const handleSwitch = () => {
         setChartView((prevView) => (prevView === "multi" ? "single" : "multi"));
@@ -188,154 +193,24 @@ const Home = () => {
         setSelectedStock(stockName);
         setChartView("single");
     };
-    const [anchorElNav, setAnchorElNav] =useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event:MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  useEffect(() => {
+    if (!isLoggedIn) {
+      const timer = setTimeout(() => {
+        setShowModal(true);
+      }, 5*60000); // 300,000 ms = 5 minutes
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+      return () => clearTimeout(timer); // Cleanup timer on unmount
+    }
+  }, [isLoggedIn]);
+  const handleLoginRedirect = () => {
+    setShowModal(false);
+    navigate("/login");
   };
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 92,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Real Time Stocks
-          </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              {/* <MenuIcon /> */}
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            {pages.map((page) => {
-                                const path =
-                                    page === 'Home'
-                                        ? '/' // Special case for "Home"
-                                        : `/${page.toLowerCase().replace(/\s+/g, '-')}`; // Dynamically generate other paths
-
-
-                                return (
-                                    <Button
-                                        key={page}
-                                        component={Link}
-                                        to={path}
-                                        onClick={handleCloseNavMenu}
-                                        sx={{ my: 2, color: 'white', display: 'block' }}
-                                    >
-                                        {page}
-                                    </Button>
-                                );
-                            })}
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+      <NavBar />
             <main className="p-4">
                 <button
                     onClick={handleSwitch}
@@ -357,7 +232,30 @@ const Home = () => {
                         )}
                     </div>
                 </div>
-            </main>
+        </main>
+        {/* Modal for Login */}
+        <Modal
+          // @ts-ignore
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          aria-labelledby="login-modal-title"
+          aria-describedby="login-modal-description"
+        >
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded shadow-lg">
+            <h2 id="login-modal-title" className="text-lg font-bold">
+              Session Expired
+            </h2>
+            <p id="login-modal-description" className="mt-2">
+              Please log in to continue.
+            </p>
+            <button
+              onClick={handleLoginRedirect}
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              Go to Login
+            </button>
+          </div>
+        </Modal>
         </div>
     );
 };
