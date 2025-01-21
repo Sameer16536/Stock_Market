@@ -14,16 +14,44 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
+  id          Int           @id @default(autoincrement())
+  name        String
+  email       String        @unique
+  password    String
+  createdAt   DateTime      @default(now())
+  Transaction Transaction[]
 }
 
 model Stock {
+  id          Int            @id @default(autoincrement())
+  symbol      String
+  data        Json
+  history     StockHistory[]
+  createdAt   DateTime       @default(now())
+  Transaction Transaction[]
+}
+
+model StockHistory {
+  id         Int      @id @default(autoincrement())
+  stockId    Int
+  stock      Stock    @relation(fields: [stockId], references: [id])
+  date       DateTime // Date for the historic data
+  openPrice  Float // Opening price of the stock
+  closePrice Float // Closing price of the stock
+  highPrice  Float // Highest price of the day
+  lowPrice   Float // Lowest price of the day
+  volume     Int // Volume traded
+  createdAt  DateTime @default(now())
+}
+
+model Transaction {
   id        Int      @id @default(autoincrement())
-  symbol    String
-  data      Json
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  stockId   Int
+  stock     Stock    @relation(fields: [stockId], references: [id])
+  type      String // "buy" or "sell"
+  quantity  Int
+  price     Float // Price at which the stock was bought/sold
   createdAt DateTime @default(now())
 }
