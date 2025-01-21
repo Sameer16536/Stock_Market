@@ -17,6 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Modal } from "@mui/material";
 import {Link, useNavigate} from 'react-router-dom'
 import NavBar from "../component/Navbar";
+import Index from "../component/Index";
 
 
 const pages = ['Home', 'Live Stocks', 'Penny Stocks','Guide','SIP'];
@@ -177,6 +178,38 @@ const stocks = [
     }
 
 ];
+const indicesData = [
+    {
+        symbol: "NIFTY 50",
+        ltp: 23344.75,
+        percentageChange: "141.55 (0.61%)",
+        timestamp: "2025-01-20T17:19:05.071Z",
+    },
+    {
+        symbol: "NIFTY NEXT 50",
+        ltp: 65106.15,
+        percentageChange: "52.55 (0.08%)",
+        timestamp: "2025-01-20T17:19:05.071Z",
+    },
+    {
+        symbol: "NIFTY MIDCAP SELECT",
+        ltp: 12356.5,
+        percentageChange: "106.65 (0.87%)",
+        timestamp: "2025-01-20T17:19:05.071Z",
+    },
+    {
+        symbol: "NIFTY BANK",
+        ltp: 49350.8,
+        percentageChange: "810.20 (1.67%)",
+        timestamp: "2025-01-20T17:19:05.071Z",
+    },
+    {
+        symbol: "NIFTY FINANCIAL SERVICES",
+        ltp: 22926.7,
+        percentageChange: "318.50 (-1.41%)",
+        timestamp: "2025-01-20T17:19:05.071Z",
+    },
+];
 
 
 const Home = () => {
@@ -218,6 +251,7 @@ const Home = () => {
                 >
                     {chartView === "multi" ? "Switch to Single Stock View" : "Switch to Multi-Stock View"}
                 </button>
+                <Index data={indicesData}/>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Stock List */}
                     <div className="col-span-1">
