@@ -24,7 +24,7 @@ model User {
 
 model Stock {
   id          Int            @id @default(autoincrement())
-  symbol      String
+  symbol      String  @unique
   data        Json
   history     StockHistory[]
   createdAt   DateTime       @default(now())
