@@ -1,361 +1,316 @@
-[
-    {
-      "symbol": "NIFTY 50",
-      "ltp": 23344.75,
-      "percentageChange": "141.55 (0.61%)",
-      "timestamp": "2025-01-20T17:19:05.071Z"
+{
+  "type": "existing",
+  "data": {
+    "gainers": {
+      "key": "nse:gainers",
+      "value": [
+        {
+          "symbol": "APOLLOHOSP",
+          "ltp": 6925,
+          "percentageChange": 2.13,
+          "volume": 799900,
+          "timestamp": "2025-01-21T15:46:04.590Z"
+        },
+        {
+          "symbol": "TATACONSUM",
+          "ltp": 972,
+          "percentageChange": 1.22,
+          "volume": 2281022,
+          "timestamp": "2025-01-21T15:46:04.590Z"
+        },
+        {
+          "symbol": "BPCL",
+          "ltp": 280.35,
+          "percentageChange": 1.1,
+          "volume": 15304149,
+          "timestamp": "2025-01-21T15:46:04.590Z"
+        },
+        {
+          "symbol": "SHRIRAMFIN",
+          "ltp": 520.05,
+          "percentageChange": 0.65,
+          "volume": 7753705,
+          "timestamp": "2025-01-21T15:46:04.590Z"
+        },
+        {
+          "symbol": "JSWSTEEL",
+          "ltp": 924.1,
+          "percentageChange": 0.53,
+          "volume": 1474919,
+          "timestamp": "2025-01-21T15:46:04.590Z"
+        },
+        {
+          "symbol": "IOC",
+          "ltp": 131.16,
+          "percentageChange": 0.51,
+          "volume": 20272605,
+          "timestamp": "2025-01-21T15:46:04.590Z"
+        },
+        {
+          "symbol": "HINDPETRO",
+          "ltp": 370.2,
+          "percentageChange": 2.73,
+          "volume": 12344913,
+          "timestamp": "2025-01-21T15:46:04.590Z"
+        },
+        {
+          "symbol": "COLPAL",
+          "ltp": 2740,
+          "percentageChange": 1.16,
+          "volume": 385694,
+          "timestamp": "2025-01-21T15:46:04.590Z"
+        },
+        {
+          "symbol": "AUBANK",
+          "ltp": 606.4,
+          "percentageChange": 0.07,
+          "volume": 1339636,
+          "timestamp": "2025-01-21T15:46:04.591Z"
+        },
+        {
+          "symbol": "AUBANK",
+          "ltp": 606.4,
+          "percentageChange": 0.07,
+          "volume": 1339636,
+          "timestamp": "2025-01-21T15:46:04.591Z"
+        },
+        {
+          "symbol": "MUTHOOTFIN",
+          "ltp": 2168.95,
+          "percentageChange": 1.25,
+          "volume": 212025,
+          "timestamp": "2025-01-21T15:46:04.591Z"
+        },
+        {
+          "symbol": "SHRIRAMFIN",
+          "ltp": 520.05,
+          "percentageChange": 0.65,
+          "volume": 7753705,
+          "timestamp": "2025-01-21T15:46:04.591Z"
+        },
+        {
+          "symbol": "SBICARD",
+          "ltp": 763.4,
+          "percentageChange": 0.25,
+          "volume": 2834308,
+          "timestamp": "2025-01-21T15:46:04.591Z"
+        }
+      ]
     },
-    {
-      "symbol": "NIFTY NEXT 50",
-      "ltp": 65106.15,
-      "percentageChange": "52.55 (0.08%)",
-      "timestamp": "2025-01-20T17:19:05.071Z"
+    "losers": {
+      "key": "nse:losers",
+      "value": [
+        {
+          "symbol": "TRENT",
+          "ltp": 5724.75,
+          "percentageChange": -6,
+          "volume": 1553225,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "NTPC",
+          "ltp": 324.5,
+          "percentageChange": -3.44,
+          "volume": 12774630,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "ADANIPORTS",
+          "ltp": 1110.9,
+          "percentageChange": -3.29,
+          "volume": 3134022,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "ICICIBANK",
+          "ltp": 1197.95,
+          "percentageChange": -2.84,
+          "volume": 20520898,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "ADANIENT",
+          "ltp": 2375,
+          "percentageChange": -2.78,
+          "volume": 1206512,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "ZOMATO",
+          "ltp": 215.4,
+          "percentageChange": -10.16,
+          "volume": 308217731,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "JIOFIN",
+          "ltp": 259.95,
+          "percentageChange": -5.71,
+          "volume": 25289898,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "LODHA",
+          "ltp": 1146,
+          "percentageChange": -5.19,
+          "volume": 1534096,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "NAUKRI",
+          "ltp": 7455,
+          "percentageChange": -4.06,
+          "volume": 404299,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "BHEL",
+          "ltp": 209.2,
+          "percentageChange": -3.56,
+          "volume": 8267629,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "DIXON",
+          "ltp": 15118,
+          "percentageChange": -13.9,
+          "volume": 2171945,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "IDEA",
+          "ltp": 9.36,
+          "percentageChange": -5.84,
+          "volume": 561246192,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "COFORGE",
+          "ltp": 8279,
+          "percentageChange": -4.42,
+          "volume": 476851,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "INDHOTEL",
+          "ltp": 760.5,
+          "percentageChange": -4.1,
+          "volume": 3343822,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "POLYCAB",
+          "ltp": 6552,
+          "percentageChange": -3.75,
+          "volume": 380639,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "ICICIBANK",
+          "ltp": 1197.95,
+          "percentageChange": -2.84,
+          "volume": 20520898,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "SBIN",
+          "ltp": 759.8,
+          "percentageChange": -2.5,
+          "volume": 13751780,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "AXISBANK",
+          "ltp": 971.85,
+          "percentageChange": -1.64,
+          "volume": 11894500,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "CANBK",
+          "ltp": 99.5,
+          "percentageChange": -1.52,
+          "volume": 12354313,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "KOTAKBANK",
+          "ltp": 1893.6,
+          "percentageChange": -1.4,
+          "volume": 4415663,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "MCX",
+          "ltp": 5500.25,
+          "percentageChange": -8.74,
+          "volume": 2045958,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "RECLTD",
+          "ltp": 476.3,
+          "percentageChange": -2.94,
+          "volume": 5395660,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "ICICIBANK",
+          "ltp": 1197.95,
+          "percentageChange": -2.84,
+          "volume": 20520898,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "SBIN",
+          "ltp": 759.8,
+          "percentageChange": -2.5,
+          "volume": 13751780,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        },
+        {
+          "symbol": "SBILIFE",
+          "ltp": 1467,
+          "percentageChange": -2.18,
+          "volume": 877160,
+          "timestamp": "2025-01-21T15:46:04.598Z"
+        }
+      ]
     },
-    {
-      "symbol": "NIFTY MIDCAP SELECT",
-      "ltp": 12356.5,
-      "percentageChange": "106.65 (0.87%)",
-      "timestamp": "2025-01-20T17:19:05.071Z"
-    },
-    {
-      "symbol": "NIFTY BANK",
-      "ltp": 49350.8,
-      "percentageChange": "810.20 (1.67%)",
-      "timestamp": "2025-01-20T17:19:05.071Z"
-    },
-    {
-      "symbol": "NIFTY FINANCIAL SERVICES",
-      "ltp": 22926.7,
-      "percentageChange": "318.50 (1.41%)",
-      "timestamp": "2025-01-20T17:19:05.071Z"
-    },
-    {
-      "symbol": "SBILIFE",
-      "ltp": 1497,
-      "percentageChange": -2.82,
-      "volume": 4033718,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "TRENT",
-      "ltp": 6079.95,
-      "percentageChange": -2.2,
-      "volume": 909757,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "SHRIRAMFIN",
-      "ltp": 516.1,
-      "percentageChange": -1.98,
-      "volume": 12701612,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "HDFCLIFE",
-      "ltp": 633.6,
-      "percentageChange": -1.34,
-      "volume": 1956252,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "ADANIPORTS",
-      "ltp": 1148.45,
-      "percentageChange": -1.29,
-      "volume": 1312101,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "ZOMATO",
-      "ltp": 230.7,
-      "percentageChange": -7.27,
-      "volume": 102666319,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "GODREJCP",
-      "ltp": 1160,
-      "percentageChange": -2.34,
-      "volume": 942639,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "ADANIPOWER",
-      "ltp": 542.5,
-      "percentageChange": -1.6,
-      "volume": 4648954,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "ICICIGI",
-      "ltp": 1918,
-      "percentageChange": -1.58,
-      "volume": 1491930,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "JIOFIN",
-      "ltp": 275.8,
-      "percentageChange": -1.15,
-      "volume": 15616628,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "VOLTAS",
-      "ltp": 1548.4,
-      "percentageChange": -3.04,
-      "volume": 1419203,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "INDHOTEL",
-      "ltp": 792,
-      "percentageChange": -2.62,
-      "volume": 11627000,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "MPHASIS",
-      "ltp": 2802.35,
-      "percentageChange": -0.53,
-      "volume": 276667,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "MRF",
-      "ltp": 113502.1,
-      "percentageChange": -0.39,
-      "volume": 5911,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "CONCOR",
-      "ltp": 771.75,
-      "percentageChange": -0.09,
-      "volume": 1238782,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "AXISBANK",
-      "ltp": 988.95,
-      "percentageChange": -0.21,
-      "volume": 33440507,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "INDUSINDBK",
-      "ltp": 970,
-      "percentageChange": -0.1,
-      "volume": 4485164,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "SBILIFE",
-      "ltp": 1497,
-      "percentageChange": -2.82,
-      "volume": 4033718,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "SHRIRAMFIN",
-      "ltp": 516.1,
-      "percentageChange": -1.98,
-      "volume": 12701612,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "ICICIGI",
-      "ltp": 1918,
-      "percentageChange": -1.58,
-      "volume": 1491930,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "HDFCLIFE",
-      "ltp": 633.6,
-      "percentageChange": -1.34,
-      "volume": 1956252,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "CHOLAFIN",
-      "ltp": 1246.35,
-      "percentageChange": -0.88,
-      "volume": 763622,
-      "timestamp": "2025-01-20T17:19:05.053Z"
-    },
-    {
-      "symbol": "KOTAKBANK",
-      "ltp": 1918,
-      "percentageChange": 9.06,
-      "volume": 13324315,
-      "timestamp": "2025-01-20T17:19:05.044Z"
-    },
-    {
-      "symbol": "WIPRO",
-      "ltp": 300.5,
-      "percentageChange": 6.58,
-      "volume": 39380165,
-      "timestamp": "2025-01-20T17:19:05.044Z"
-    },
-    {
-      "symbol": "BAJFINANCE",
-      "ltp": 7427.5,
-      "percentageChange": 3.42,
-      "volume": 1067971,
-      "timestamp": "2025-01-20T17:19:05.044Z"
-    },
-    {
-      "symbol": "BAJAJFINSV",
-      "ltp": 1737,
-      "percentageChange": 3.35,
-      "volume": 1674215,
-      "timestamp": "2025-01-20T17:19:05.044Z"
-    },
-    {
-      "symbol": "NTPC",
-      "ltp": 334.95,
-      "percentageChange": 2.7,
-      "volume": 17991880,
-      "timestamp": "2025-01-20T17:19:05.044Z"
-    },
-    {
-      "symbol": "CANBK",
-      "ltp": 100.95,
-      "percentageChange": 3.14,
-      "volume": 29523421,
-      "timestamp": "2025-01-20T17:19:05.044Z"
-    },
-    {
-      "symbol": "LODHA",
-      "ltp": 1211.05,
-      "percentageChange": 2.9,
-      "volume": 2096285,
-      "timestamp": "2025-01-20T17:19:05.044Z"
-    },
-    {
-      "symbol": "UNIONBANK",
-      "ltp": 111.31,
-      "percentageChange": 2.4,
-      "volume": 12915935,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "UNITDSPR",
-      "ltp": 1460.5,
-      "percentageChange": 2.31,
-      "volume": 1610101,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "IOC",
-      "ltp": 130.66,
-      "percentageChange": 2.02,
-      "volume": 8234561,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "IDEA",
-      "ltp": 9.95,
-      "percentageChange": 9.22,
-      "volume": 1739054316,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "INDUSTOWER",
-      "ltp": 374,
-      "percentageChange": 3.12,
-      "volume": 23507683,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "PERSISTENT",
-      "ltp": 6075,
-      "percentageChange": 1.91,
-      "volume": 500440,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "IDFCFIRSTB",
-      "ltp": 63.71,
-      "percentageChange": 1.84,
-      "volume": 22704592,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "AUROPHARMA",
-      "ltp": 1199.9,
-      "percentageChange": 1.83,
-      "volume": 617523,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "KOTAKBANK",
-      "ltp": 1918,
-      "percentageChange": 9.06,
-      "volume": 13324315,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "CANBK",
-      "ltp": 100.95,
-      "percentageChange": 3.14,
-      "volume": 29523421,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "SBIN",
-      "ltp": 778.5,
-      "percentageChange": 1.88,
-      "volume": 9198929,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "IDFCFIRSTB",
-      "ltp": 63.71,
-      "percentageChange": 1.84,
-      "volume": 22704592,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "BANKBARODA",
-      "ltp": 231.62,
-      "percentageChange": 1.59,
-      "volume": 8569679,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "KOTAKBANK",
-      "ltp": 1918,
-      "percentageChange": 9.06,
-      "volume": 13324315,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "BAJFINANCE",
-      "ltp": 7427.5,
-      "percentageChange": 3.42,
-      "volume": 1067971,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "BAJAJFINSV",
-      "ltp": 1737,
-      "percentageChange": 3.35,
-      "volume": 1674215,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "SBICARD",
-      "ltp": 760,
-      "percentageChange": 2.58,
-      "volume": 2167132,
-      "timestamp": "2025-01-20T17:19:05.045Z"
-    },
-    {
-      "symbol": "SBIN",
-      "ltp": 778.5,
-      "percentageChange": 1.88,
-      "volume": 9198929,
-      "timestamp": "2025-01-20T17:19:05.045Z"
+    "indices": {
+      "key": "nse:indices",
+      "value": [
+        {
+          "symbol": "NIFTY 50",
+          "ltp": 23024.65,
+          "percentageChange": "-320.10 (-1.37%)",
+          "timestamp": "2025-01-21T15:46:04.607Z"
+        },
+        {
+          "symbol": "NIFTY NEXT 50",
+          "ltp": 63406.15,
+          "percentageChange": "-1,700.00 (-2.61%)",
+          "timestamp": "2025-01-21T15:46:04.607Z"
+        },
+        {
+          "symbol": "NIFTY MIDCAP SELECT",
+          "ltp": 12013.35,
+          "percentageChange": "-343.15 (-2.78%)",
+          "timestamp": "2025-01-21T15:46:04.607Z"
+        },
+        {
+          "symbol": "NIFTY BANK",
+          "ltp": 48570.9,
+          "percentageChange": "-779.90 (-1.58%)",
+          "timestamp": "2025-01-21T15:46:04.607Z"
+        },
+        {
+          "symbol": "NIFTY FINANCIAL SERVICES",
+          "ltp": 22548.9,
+          "percentageChange": "-377.80 (-1.65%)",
+          "timestamp": "2025-01-21T15:46:04.607Z"
+        }
+      ]
     }
-  ]
+  }
+}

@@ -125,6 +125,6 @@ export async function scrapeNSEIndia() {
 }
 
 // // Run the scraper
-scrapeNSEIndia()
+// scrapeNSEIndia()
 //   .then(() => console.log('Scraping completed successfully.'))
 //   .catch((error) => console.error('Scraper encountered an error:', error));
