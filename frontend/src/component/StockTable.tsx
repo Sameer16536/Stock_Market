@@ -9,12 +9,13 @@ interface StockData {
 }
 
 interface StockTableProps {
-    data: StockData[];
+    gainersData: StockData[];
+    losersData: StockData[]
 }
 
-const StockTable: React.FC<StockTableProps> = ({ data }) => {
-    const gainers = data.filter((stock) => stock.percentageChange > 0);
-    const losers = data.filter((stock) => stock.percentageChange < 0);
+const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
+    const gainers = gainersData
+    const losers = losersData
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
