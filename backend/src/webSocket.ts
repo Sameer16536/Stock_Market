@@ -1,5 +1,6 @@
 import WebSocket from "ws";
 import Redis from "ioredis";
+import { getStockDataFromRedis } from "./services/redis.service";
 
 const redis = new Redis();
 
@@ -12,6 +13,7 @@ export const createWebSocketServer = (httpServer: any) => {
     gainers: [],
     losers: [],
     indices: [],
+    weekData: [],
   };
 
   wss.on("connection", async (ws) => {
@@ -23,6 +25,7 @@ export const createWebSocketServer = (httpServer: any) => {
         gainers: JSON.parse((await redis.get("nse:gainers")) || "[]"),
         losers: JSON.parse((await redis.get("nse:losers")) || "[]"),
         indices: JSON.parse((await redis.get("nse:indices")) || "[]"),
+        weekData: JSON.parse((await redis.get("nse:week52")) || "[]"),
       };
 
       ws.send(JSON.stringify({ type: "existing", data: existingData }));
@@ -56,6 +59,8 @@ export const createWebSocketServer = (httpServer: any) => {
             aggregatedData.gainers = update.value;
           } else if (update.key === "nse:losers" && Array.isArray(update.value)) {
             aggregatedData.losers = update.value;
+          } else if (update.key === "nse:week52" && Array.isArray(update.value)) {
+            aggregatedData.weekData = update.value;
           }
     
           console.log("Updated aggregated data:", aggregatedData);
@@ -65,6 +70,7 @@ export const createWebSocketServer = (httpServer: any) => {
             gainers: aggregatedData.gainers,
             losers: aggregatedData.losers,
             indices: aggregatedData.indices,
+            weekData: aggregatedData.weekData,
           };
     
           ws.send(JSON.stringify({ type: "update", data: consolidatedData }));

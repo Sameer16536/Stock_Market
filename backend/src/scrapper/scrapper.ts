@@ -14,12 +14,7 @@ interface StockData {
 }
 
 
-interface TopLabelsData { 
-  symbol: string;
-  ltp: number; // Last Traded Price
-  percentageChange: number; // % change
-  timestamp: string;
-}
+
 interface IndexData {
   symbol: string; // Index name
   ltp: number; // Last Traded Price
@@ -27,6 +22,10 @@ interface IndexData {
   timestamp: string; // Timestamp of the scrape
 }
 
+interface WeekData {
+  label: string;
+  count: number;
+}
 
 export async function scrapeNSEIndia() {
   const browser = await chromium.launch({ headless: false });
@@ -46,6 +45,8 @@ export async function scrapeNSEIndia() {
       page.waitForSelector('.gainers tbody tr'),
       page.waitForSelector('.loosers tbody tr'),
       page.waitForSelector('.nav.nav-tabs'),
+      page.waitForSelector('.week52_white_bg'),
+
     ]);
 
     // Scrape stock data from the Gainers table
@@ -107,8 +108,24 @@ export async function scrapeNSEIndia() {
     }).filter((stock) => stock !== null) // Filter out null values
   ) as IndexData[]; 
 
+    // Scrape 52-week high and low data
+    const week52Data: WeekData[] = await page.$$eval('.week52_white_bg .item', (items) => {
+      const data: { label: string; count: number }[] = items.map((item) => {
+        const label = item.querySelector('p span.font-bold')?.textContent?.trim() || 'N/A';
+        const count = parseInt(item.querySelector('a')?.textContent?.trim() || '0', 10);
+        return { label, count };
+      });
+    
+      // Remove duplicates using a Map
+      const uniqueData = Array.from(
+        new Map(data.map((item) => [`${item.label}-${item.count}`, item])).values()
+      );
+    
+      return uniqueData;
+    });
+    
 
-    const stocks = { gainers, losers, indicesData };
+    const stocks = { gainers, losers, indicesData, week52Data };
 
     // Save scraped data to a JSON file
     await writeJSON(OUTPUT_FILE, stocks, { spaces: 2 });
@@ -117,6 +134,7 @@ export async function scrapeNSEIndia() {
     await storeInRedis('nse:gainers', gainers);
     await storeInRedis('nse:losers', losers);
     await storeInRedis('nse:indices', indicesData);
+    await storeInRedis('nse:week52', week52Data);
   } catch (error) {
     console.error('Error during scraping:', error);
   } finally {
