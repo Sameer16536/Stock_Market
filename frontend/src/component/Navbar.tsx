@@ -37,8 +37,8 @@ const NavBar = () => {
     };
 
     return (
-        <AppBar position="static">
-            <Container maxWidth="xl">
+        <AppBar position="static" sx={{ bgcolor: '#EAB308',color:'black' }}>
+            <Container maxWidth="xl" >
                 <Toolbar disableGutters>
                     <Typography
                         variant="h6"
@@ -51,14 +51,14 @@ const NavBar = () => {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+                            color: 'black',
                             textDecoration: 'none',
                         }}
                     >
                         Real Time Stocks
                     </Typography>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' ,color:'black' } }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -83,7 +83,7 @@ const NavBar = () => {
                             }}
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
-                            sx={{ display: { xs: 'block', md: 'none' } }}
+                            sx={{ display: { xs: 'block', md: 'none',color:'black' } }}
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -105,7 +105,7 @@ const NavBar = () => {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+                            color: 'black',
                             textDecoration: 'none',
                         }}
                     >

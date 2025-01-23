@@ -576,12 +576,12 @@ const Home = () => {
   };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-slate-800">
       <NavBar />
             <main className="p-4">
                 <button
                     onClick={handleSwitch}
-                    className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
+                    className="mb-4 px-4 py-2 bg-yellow-500 text-white rounded"
                 >
                     {chartView === "multi" ? "Switch to Single Stock View" : "Switch to Multi-Stock View"}
                 </button>
@@ -620,7 +620,7 @@ const Home = () => {
             </p>
             <button
               onClick={handleLoginRedirect}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+              className="mt-4 px-4 py-2 bg-yellow-500 text-white rounded"
             >
               Go to Login
             </button>

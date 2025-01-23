@@ -12,15 +12,22 @@ interface IndicesProps {
 }
 
 const Index: React.FC<IndicesProps> = ({ data }) => {
+    const columns = Math.min(5, data.length); // Limit columns to 5 max for better layout
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
+        <div
+            className="grid gap-4 p-4"
+            style={{
+                gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`, // Create dynamic columns
+            }}
+        >
             {data.map((index) => {
                 // Extract the sign from percentageChange to determine color
                 const isPositive = !index.percentageChange.includes("-");
                 return (
                     <div
                         key={index.symbol}
-                        className={`p-4 border rounded shadow-md ${isPositive ? "border-green-500" : "border-red-500"
+                        className={`p-4 border rounded shadow-md text-white ${isPositive ? "border-green-500" : "border-red-500"
                             }`}
                     >
                         <h2 className="text-lg font-semibold">{index.symbol}</h2>
