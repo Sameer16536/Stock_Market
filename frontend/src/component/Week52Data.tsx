@@ -1,0 +1,32 @@
+
+interface WeekData {
+
+        label: string;
+        count: number
+}
+
+interface WeekDataProps{
+    weekData: WeekData[]
+}
+const Week52Data: React.FC<WeekDataProps> = ({weekData}) => {
+
+      return(
+          <div className="w-full max-w-md mx-auto mt-6 p-4 bg-white shadow-md rounded-lg">
+              {/* <h3 className="text-lg font-bold text-gray-700 mb-4">{weekData.key}</h3> */}
+              <div className="flex flex-col gap-4">
+                  {weekData.map((item, index) => (
+                      <div
+                          key={index}
+                          className={`flex justify-between items-center px-4 py-3 rounded-md ${item.count >= 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                              }`}
+                      >
+                          <span className="text-base font-semibold">{item.label}</span>
+                          <span className="text-lg font-bold">{item.count}</span>
+                      </div>
+                  ))}
+              </div>
+          </div>
+  )
+}
+
+export default Week52Data

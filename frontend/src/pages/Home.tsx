@@ -7,6 +7,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import NavBar from "../component/Navbar";
 import Index from "../component/Index";
 import StockTable from "../component/StockTable";
+import Week52Data from "../component/Week52Data";
 
 
 const mockChartData = [
@@ -214,6 +215,11 @@ type Index = {
     percentageChange: string;
     timestamp: string;
 };
+
+type WeekData = {
+    label: string,
+    count:number
+}
 
 
 const Home = () => {
@@ -532,6 +538,20 @@ const Home = () => {
                         "timestamp": "2025-01-21T15:46:04.607Z"
                     }
                 ]
+            },
+            "weekData": {
+                "key": "nse:week52",
+                "value": [
+                    {
+                        "label": "52 Week High",
+                        "count": 142
+                    },
+                    {
+
+                        "label": "52 Week low",
+                        "count": -73
+                    }
+                ]
             }
         }
     }]
@@ -541,7 +561,8 @@ const Home = () => {
     const [showModal, setShowModal] = useState<boolean | null>(false)
     const [gainers,setGainers]= useState<Gainer[]>([])
     const[losers,setLosers] = useState<Loser[]>([])
-    const [indices,setIndices] = useState<Index[]>([])
+    const [indices, setIndices] = useState<Index[]>([])
+    const [weekData,setWeekData] = useState<WeekData[]>([])
   const navigate = useNavigate()
 
     const handleSwitch = () => {
@@ -553,10 +574,11 @@ const Home = () => {
     };
     const { data } = sampleData[0];
     useEffect(() => {
-        const { gainers, losers, indices } = sampleData[0].data;
+        const { gainers, losers, indices,weekData } = sampleData[0].data;
         setGainers(gainers.value);
         setLosers(losers.value);
         setIndices(indices.value);
+        setWeekData(weekData.value)
     },[])
 
 
@@ -585,7 +607,8 @@ const Home = () => {
                 >
                     {chartView === "multi" ? "Switch to Single Stock View" : "Switch to Multi-Stock View"}
                 </button>
-                <Index data={indices}/>
+                <Index data={indices} />
+                <Week52Data weekData={weekData}/>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Stock List */}
                     <div className="col-span-1">
