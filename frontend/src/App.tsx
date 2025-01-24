@@ -7,7 +7,10 @@ import StockMarketGuide from './component/Guide'
 import LiveStocks from './pages/LiveStocks'
 import PennyStock from './pages/PennyStocks'
 import SIP from './pages/SIP'
+import { useWebSocket,AggregatedData } from './websocket/useWebSocket'
 const App = () => {
+  const { indices, gainers, losers, weekData } = useWebSocket("stockData");
+  console.log({ indices, gainers, losers, weekData });
   return (
     <div>
       <BrowserRouter>

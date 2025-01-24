@@ -1,31 +1,47 @@
-import { useEffect, useState } from 'react';
-import WebSocketService from './WebSocketService'
-import { useSub, usePub } from '../hooks/PubSub';
+import { useEffect, useState } from "react";
+import WebSocketService from "./WebSocketService";
+import { emitter } from "../hooks/PubSub";
 
-export interface StockData {
-    symbol: string;
-    ltp: number;
-    change: number;
-    percentageChange: number;
-    timestamp: string;
+export interface AggregatedData {
+  gainers: any[];
+  losers: any[];
+  indices: any[];
+  weekData: any[];
 }
 
+export const useWebSocket = (channel: string): AggregatedData => {
+  const [data, setData] = useState<AggregatedData>({
+    gainers: [],
+    losers: [],
+    indices: [],
+    weekData: [],
+  });
 
-export const useWebSocket = (url: string): StockData[] => {
-    const publish = usePub()
-    const [data, setData] = useState<StockData[]>([])
-    const wsUrl = url
-    useEffect(() => {
-        if (!WebSocketService.isConnected('stockData')) {
-            WebSocketService.connect('stockData')
+  useEffect(() => {
+    if (!WebSocketService.isConnected(channel)) {
+      WebSocketService.connect(channel);
+    }
+
+    const handleMessage = (message: any) => {
+      try {
+        // Ensure the message has the expected structure
+        if (message.type === "existing" && message.data) {
+          setData(message.data);
+        } else {
+          console.warn("Unexpected WebSocket message format:", message);
         }
-        return () => {
-            WebSocketService.disconnect('stockData')
-        }
-    }, [])
+      } catch (error) {
+        console.error("Error parsing WebSocket message:", error);
+      }
+    };
 
-    return (
-        <div>{data}</div>
-    )
-}
+    emitter.on(`${channel}-message`, handleMessage);
 
+    return () => {
+      WebSocketService.disconnect(channel);
+      emitter.off(`${channel}-message`, handleMessage);
+    };
+  }, [channel]);
+
+  return data;
+};
