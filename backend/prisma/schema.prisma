@@ -20,6 +20,7 @@ model User {
   password    String
   createdAt   DateTime      @default(now())
   Transaction Transaction[]
+  credits   Float         @default(10000)
 }
 
 model Stock {
