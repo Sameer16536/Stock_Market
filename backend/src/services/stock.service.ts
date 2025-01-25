@@ -76,17 +76,19 @@ const tradeInfo = await page.evaluate(() => ({
   });
   
 
-    console.log('Trade Information:', tradeInfo);
-    console.log('Price Information:', priceInfo);
-    console.log('Securities Information:', securitiesInfo);
-
-    // Scrape historical stock data
-    
-
-    // Save extracted data to JSON
-    await writeJSON(OUTPUT_FILE, { tradeInfo, priceInfo, securitiesInfo,});
-
+     // Save the scraped data to JSON file
+     const fullStockData = {
+      stockSymbol,
+      tradeInfo,
+      priceInfo,
+      securitiesInfo,
+    };
+    await writeJSON(OUTPUT_FILE, fullStockData);
     console.log('Data saved to:', OUTPUT_FILE);
+
+    // Save the stock info data to the database
+    await saveStockData(stockSymbol, priceInfo);
+    await saveStockHistory(stockSymbol,fullStockData);
   } catch (error) {
     console.error('Error scraping stock history:', error);
     throw new Error('Failed to scrape stock history');
@@ -99,31 +101,115 @@ scrapeStockHistory('HINDUNILVR')
   .then(() => console.log('Stock history scraping completed successfully.'))
   .catch((error) => console.error('Stock history scraper encountered an error:', error));
 
-export const saveStockHistory = async (symbol: string, historyData: any[]) => {
+
+
+  const saveStockData = async (stockSymbol: string, priceInfo: any) => {
     try {
-      const stock = await prisma.stock.findUnique({ where: { symbol } });
-      if (!stock) {
-        throw new Error(`Stock with symbol ${symbol} not found`);
-      }
+      // Check if the stock already exists in the database
+      let stock = await prisma.stock.findUnique({
+        where: { symbol: stockSymbol },
+      });
   
-      for (const record of historyData) {
-        await prisma.stockHistory.create({
+      // If the stock doesn't exist, create it
+      if (!stock) {
+        stock = await prisma.stock.create({
           data: {
-            stockId: stock.id,
-            date: record.date,
-            openPrice: record.openPrice,
-            highPrice: record.highPrice,
-            lowPrice: record.lowPrice,
-            closePrice: record.closePrice,
-            volume: record.volume,
+            symbol: stockSymbol,  // Assuming you have a `symbol` field in your `Stock` table
+            data: priceInfo,  // Save priceInfo as a JSON object in the `Stock` table
           },
         });
+        console.log('Stock created:', stock);
+      } else {
+        console.log('Stock already exists:', stock);
       }
-  
-      console.log(`Stock history for ${symbol} saved successfully!`);
     } catch (error) {
-      console.error('Error saving stock history:', error);
-      throw new Error('Failed to save stock history');
+      console.error('Error saving stock data:', error);
+      throw new Error('Failed to save stock data.');
     }
   };
+  
 
+
+
+
+
+  
+  const saveStockHistory = async (stockSymbol: string, stockData: any) => {
+    try {
+      // Validate input data
+      if (!stockSymbol || !stockData || !stockData.priceInfo) {
+        throw new Error('Invalid stock data provided.');
+      }
+  
+      // Upsert the stock (create or update)
+      const stock = await prisma.stock.upsert({
+        where: { symbol: stockSymbol },
+        create: {
+          symbol: stockSymbol,
+          data: {
+            weekLow: stockData.priceInfo.weekLow || 0,
+            tickSize: stockData.priceInfo.tickSize || 0,
+            weekHigh: stockData.priceInfo.weekHigh || 0,
+            lowerBand: stockData.priceInfo.lowerBand || 0,
+            priceBand: stockData.priceInfo.priceBand || 0,
+            upperBand: stockData.priceInfo.upperBand || 0,
+            weekLowDate: stockData.priceInfo.weekLowDate || null,
+            weekHighDate: stockData.priceInfo.weekHighDate || null,
+            dailyVolatility: stockData.priceInfo.dailyVolatility || 0,
+            annualVolatility: stockData.priceInfo.annualVolatility || 0,
+          },
+        },
+        update: {
+          // Update stock data if necessary
+          data: {
+            weekLow: stockData.priceInfo.weekLow || undefined,
+            tickSize: stockData.priceInfo.tickSize || undefined,
+            weekHigh: stockData.priceInfo.weekHigh || undefined,
+            lowerBand: stockData.priceInfo.lowerBand || undefined,
+            priceBand: stockData.priceInfo.priceBand || undefined,
+            upperBand: stockData.priceInfo.upperBand || undefined,
+            weekLowDate: stockData.priceInfo.weekLowDate || undefined,
+            weekHighDate: stockData.priceInfo.weekHighDate || undefined,
+            dailyVolatility: stockData.priceInfo.dailyVolatility || undefined,
+            annualVolatility: stockData.priceInfo.annualVolatility || undefined,
+          },
+        },
+      });
+  
+      // Prepare stock history data
+      const stockHistoryData = {
+        stockId: stock.id,
+        date: stockData.date ? new Date(stockData.date) : new Date(),
+        openPrice: parseFloat(stockData.priceInfo.openPrice) || 0,
+        highPrice: parseFloat(stockData.priceInfo.highPrice) || 0,
+        lowPrice: parseFloat(stockData.priceInfo.lowPrice) || 0,
+        closePrice: parseFloat(stockData.priceInfo.closePrice) || 0,
+        volume: parseInt(stockData.tradeInfo?.volume, 10) || 0,
+        tradeInfo: stockData.tradeInfo || {},
+        priceInfo: stockData.priceInfo || {},
+        securitiesInfo: stockData.securitiesInfo || {},
+      };
+  
+      // Upsert the stock history
+      await prisma.stockHistory.upsert({
+        where: {
+          stockId_date: {
+            stockId: stockHistoryData.stockId,
+            date: stockHistoryData.date,
+          },
+        },
+        update: {
+          ...stockHistoryData, // Update all fields if the record exists
+        },
+        create: {
+          ...stockHistoryData, // Create a new record if none exists
+        },
+      });
+  
+      console.log(`Stock history for "${stockSymbol}" saved successfully.`);
+    } catch (error) {
+      console.error('Error saving stock history:', error);
+      throw new Error('Failed to save stock history.');
+    }
+  };
+  

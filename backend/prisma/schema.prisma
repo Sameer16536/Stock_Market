@@ -25,7 +25,7 @@ model User {
 
 model Stock {
   id          Int            @id @default(autoincrement())
-  symbol      String  @unique
+  symbol      String         @unique
   data        Json
   history     StockHistory[]
   createdAt   DateTime       @default(now())
@@ -33,17 +33,22 @@ model Stock {
 }
 
 model StockHistory {
-  id         Int      @id @default(autoincrement())
-  stockId    Int
-  stock      Stock    @relation(fields: [stockId], references: [id])
-  date       DateTime // Date for the historic data
-  openPrice  Float // Opening price of the stock
-  closePrice Float // Closing price of the stock
-  highPrice  Float // Highest price of the day
-  lowPrice   Float // Lowest price of the day
-  volume     Int // Volume traded
-  createdAt  DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  stockId       Int
+  stock         Stock    @relation(fields: [stockId], references: [id])
+  date          DateTime // Date for the historic data
+  openPrice     Float // Opening price of the stock
+  closePrice    Float // Closing price of the stock
+  highPrice     Float // Highest price of the day
+  lowPrice      Float // Lowest price of the day
+  volume        Int // Volume traded
+  tradeInfo     Json? // Include tradeInfo as a Json type
+  priceInfo     Json? // Include priceInfo as a Json type
+  securitiesInfo Json? // Include securitiesInfo as a Json type
+  createdAt     DateTime @default(now())
+  @@unique([stockId, date])
 }
+
 
 model Transaction {
   id        Int      @id @default(autoincrement())
