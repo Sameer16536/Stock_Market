@@ -103,7 +103,7 @@ scrapeStockHistory('HINDUNILVR')
 
 
 
-  const saveStockData = async (stockSymbol: string, priceInfo: any) => {
+export  const saveStockData = async (stockSymbol: string, priceInfo: any) => {
     try {
       // Check if the stock already exists in the database
       let stock = await prisma.stock.findUnique({
@@ -134,7 +134,7 @@ scrapeStockHistory('HINDUNILVR')
 
 
   
-  const saveStockHistory = async (stockSymbol: string, stockData: any) => {
+export  const saveStockHistory = async (stockSymbol: string, stockData: any) => {
     try {
       // Validate input data
       if (!stockSymbol || !stockData || !stockData.priceInfo) {

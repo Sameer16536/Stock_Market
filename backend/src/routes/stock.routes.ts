@@ -1,13 +1,24 @@
 //@ts-nocheck
 import express from "express";
-
 import { authMiddleware } from "../middlewares/auth.middleware";
-import { buyStock, getStockHistory, sellStock } from "../controllers/stock.controller";
-
+import {
+  buyStock,
+  sellStock,
+  getRecentHistoryForAllStocks,
+  getSingleStockData,
+  getStockHistoryData,
+} from "../controllers/stock.controller";
 
 const router = express.Router();
-router.get("/stocks", authMiddleware,getStockHistory )
-router.post("/stocks/:symbol/buy", buyStock)
-router.post("/stocks/:symbol/sell",sellStock)
+
+// Routes for stock data
+router.get("/recent-history", authMiddleware, getRecentHistoryForAllStocks);
+router.get("/:symbol", authMiddleware, getSingleStockData);
+router.get("/:symbol/history", authMiddleware, getStockHistoryData);
+
+// Routes for stock trading
+router.post("/:symbol/buy", authMiddleware, buyStock);
+router.post("/:symbol/sell", authMiddleware, sellStock);
 
 export default router;
+

@@ -139,6 +139,7 @@ export const getUserProfile = async (
       id: user.id,
       email: user.email,
       name: user.name,
+      credits: user.credits,
     });
   } catch (error) {
     console.error("Error getting user profile:", error);
