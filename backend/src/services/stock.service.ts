@@ -97,9 +97,9 @@ const tradeInfo = await page.evaluate(() => ({
   }
 }
 
-scrapeStockHistory('HINDUNILVR')
-  .then(() => console.log('Stock history scraping completed successfully.'))
-  .catch((error) => console.error('Stock history scraper encountered an error:', error));
+// scrapeStockHistory('HINDUNILVR')
+//   .then(() => console.log('Stock history scraping completed successfully.'))
+//   .catch((error) => console.error('Stock history scraper encountered an error:', error));
 
 
 
