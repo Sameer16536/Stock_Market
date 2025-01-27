@@ -20,5 +20,6 @@ router.get("/:symbol/history", authMiddleware, getStockHistoryData);
 router.post("/:symbol/buy", authMiddleware, buyStock);
 router.post("/:symbol/sell", authMiddleware, sellStock);
 
+
 export default router;
 

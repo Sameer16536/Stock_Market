@@ -248,3 +248,21 @@ export const sellStock = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Something went wrong", error });
   }
 };
+
+export const getTransactionsForUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const transactions = await prisma.transaction.findMany({
+      where: { userId: parseInt(userId) },
+      include: {
+        stock: true,
+      },
+      orderBy:{
+        createdAt:"desc"
+      }
+    });
+    return res.status(200).json({ transactions });
+}catch (error) {
+    return res.status(500).json({ message: "Something went wrong", error });
+  } }
