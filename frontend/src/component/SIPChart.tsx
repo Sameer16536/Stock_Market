@@ -87,7 +87,6 @@ const SipChart: React.FC<SipChartProps> = ({
 
     return (
         <div className="bg-white p-6 rounded shadow">
-            <NavBar />
             <h2 className="text-2xl font-bold mb-4 text-gray-800">{title}</h2>
             <Line data={chartData} options={options} />
         </div>
