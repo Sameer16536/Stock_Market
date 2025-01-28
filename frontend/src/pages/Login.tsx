@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import { APIUtility } from "../services/Api";
 
 const Login: React.FC = () => {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -13,10 +14,17 @@ const Login: React.FC = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
+        const payload = {
+            email: formData.email,
+            password:formData.password
+        }
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/signin", formData);
+            const response = await APIUtility.loginUser(payload)
+            console.log(response)
+            navigate('/')
             alert("Sign-in successful!");
         } catch (error: any) {
             alert(error.response?.data?.message || "Sign-in failed!");

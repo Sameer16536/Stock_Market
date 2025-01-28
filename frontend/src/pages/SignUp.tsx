@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { APIUtility } from "../services/Api";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage: React.FC = () => {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -15,9 +17,16 @@ const SignUpPage: React.FC = () => {
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
+        const payload = {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password
+        }
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/signup", formData);
-            alert("Sign-up successful!");
+            const response = await APIUtility.registerUser(payload)
+            console.log(response,"Sign UP")
+            alert("User Registered Successfully");
+            navigate('/')
         } catch (error: any) {
             alert(error.response?.data?.message || "Sign-up failed!");
         }
