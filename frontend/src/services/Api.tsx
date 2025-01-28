@@ -92,5 +92,25 @@ export const APIUtility = {
       method: "GET",
       url: `/stocks/${stockSymbol}`,
     }),
+  
+  buyStock: (body: { stockSymbol: string }) => {
+    const {stockSymbol} = body
+    apiCall({
+      method: "POST",
+      data:body,
+      url:`/stocks/${stockSymbol}/buy`
+    })
+  },
+
+  sellStock: (body: { stockSymbol: string }) => {
+    const { stockSymbol } = body
+    apiCall({
+      method: "POST",
+      data: body,
+      url: `/stocks/${stockSymbol}/sell`
+    })
+  }
+
+  
 
 };
