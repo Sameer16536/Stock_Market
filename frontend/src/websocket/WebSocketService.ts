@@ -1,41 +1,38 @@
 import { emitter } from "../hooks/PubSub";
 
 class WebSocketService {
-  private sockets: Record<string, WebSocket> = {};
+  private socket: WebSocket | null = null;
 
-  connect(channel: string) {
-    if (this.sockets[channel]) return;
+  connect() {
+    if (this.socket) return; // Prevent multiple connections
 
-    const socket = new WebSocket(`ws://localhost:3000/${channel}`);
-    socket.onopen = () => this.handleEvent(channel, "connected");
-    socket.onmessage = (event) =>
-      this.handleEvent(channel, "message", JSON.parse(event.data));
-    socket.onerror = (error) => this.handleEvent(channel, "error", error);
-    socket.onclose = () => this.handleEvent(channel, "disconnected");
-    this.sockets[channel] = socket;
+    this.socket = new WebSocket("ws://localhost:3000");
+
+    this.socket.onopen = () => emitter.emit("ws-connected");
+    this.socket.onmessage = (event) =>
+      emitter.emit("ws-message", JSON.parse(event.data));
+    this.socket.onerror = (error) => emitter.emit("ws-error", error);
+    this.socket.onclose = () => {
+      emitter.emit("ws-disconnected");
+      this.socket = null; // Reset socket on disconnect
+    };
   }
 
-  disconnect(channel: string) {
-    if (!this.sockets[channel]) return;
-
-    this.sockets[channel].close();
-    delete this.sockets[channel];
-  }
-
-  sendMessage(channel: string, message: object) {
-    const socket = this.sockets[channel];
-    if (socket?.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify(message));
+  disconnect() {
+    if (this.socket) {
+      this.socket.close();
+      this.socket = null;
     }
   }
-   
-  handleEvent(channel: string, event: string, data: any = null) {
-    const eventEmitter = emitter;
-    eventEmitter.emit(`${channel}-${event}`, data);
+
+  sendMessage(message: object) {
+    if (this.socket?.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify(message));
+    }
   }
 
-  isConnected(channel: string): boolean {
-    return this.sockets[channel]?.readyState === WebSocket.OPEN;
+  isConnected(): boolean {
+    return this.socket?.readyState === WebSocket.OPEN;
   }
 }
 

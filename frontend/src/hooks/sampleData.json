@@ -1,0 +1,373 @@
+{
+    "type": "update",
+    "data": {
+        "gainers": [
+            {
+                "symbol": "BAJFINANCE",
+                "ltp": 7610,
+                "percentageChange": 4.31,
+                "volume": 2478933,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "AXISBANK",
+                "ltp": 983.25,
+                "percentageChange": 3.71,
+                "volume": 21781371,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "SHRIRAMFIN",
+                "ltp": 529.85,
+                "percentageChange": 3.56,
+                "volume": 16222471,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "BAJAJFINSV",
+                "ltp": 1770.1,
+                "percentageChange": 3.42,
+                "volume": 2439528,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "HDFCBANK",
+                "ltp": 1673.3,
+                "percentageChange": 2.67,
+                "volume": 15089656,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "TVSMOTOR",
+                "ltp": 2350,
+                "percentageChange": 5.32,
+                "volume": 1446186,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "CHOLAFIN",
+                "ltp": 1234,
+                "percentageChange": 4.99,
+                "volume": 4408311,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "UNIONBANK",
+                "ltp": 110.58,
+                "percentageChange": 4.73,
+                "volume": 44234897,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "PNB",
+                "ltp": 99.98,
+                "percentageChange": 4.68,
+                "volume": 41891053,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "SHREECEM",
+                "ltp": 26044.5,
+                "percentageChange": 3.63,
+                "volume": 33890,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "AUBANK",
+                "ltp": 588.8,
+                "percentageChange": 4.5,
+                "volume": 6984979,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "ASHOKLEY",
+                "ltp": 204.3,
+                "percentageChange": 3.55,
+                "volume": 11620003,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "GODREJPROP",
+                "ltp": 2170,
+                "percentageChange": 3.54,
+                "volume": 1581235,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "IDFCFIRSTB",
+                "ltp": 58.3,
+                "percentageChange": 2.77,
+                "volume": 72784826,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "MRF",
+                "ltp": 112841,
+                "percentageChange": 1.42,
+                "volume": 9345,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "PNB",
+                "ltp": 99.98,
+                "percentageChange": 4.68,
+                "volume": 41891053,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "AUBANK",
+                "ltp": 588.8,
+                "percentageChange": 4.5,
+                "volume": 6984979,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "AXISBANK",
+                "ltp": 983.25,
+                "percentageChange": 3.71,
+                "volume": 21781371,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "IDFCFIRSTB",
+                "ltp": 58.3,
+                "percentageChange": 2.77,
+                "volume": 72784826,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "HDFCBANK",
+                "ltp": 1673.3,
+                "percentageChange": 2.67,
+                "volume": 15089656,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "CHOLAFIN",
+                "ltp": 1234,
+                "percentageChange": 4.99,
+                "volume": 4408311,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "BAJFINANCE",
+                "ltp": 7610,
+                "percentageChange": 4.31,
+                "volume": 2478933,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "AXISBANK",
+                "ltp": 983.25,
+                "percentageChange": 3.71,
+                "volume": 21781371,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "SHRIRAMFIN",
+                "ltp": 529.85,
+                "percentageChange": 3.56,
+                "volume": 16222471,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            },
+            {
+                "symbol": "BAJAJFINSV",
+                "ltp": 1770.1,
+                "percentageChange": 3.42,
+                "volume": 2439528,
+                "timestamp": "2025-01-28T15:55:05.248Z"
+            }
+        ],
+        "losers": [
+            {
+                "symbol": "SUNPHARMA",
+                "ltp": 1711,
+                "percentageChange": -4.24,
+                "volume": 5972497,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "BRITANNIA",
+                "ltp": 5065,
+                "percentageChange": -2.15,
+                "volume": 456912,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "HINDALCO",
+                "ltp": 574.7,
+                "percentageChange": -2.08,
+                "volume": 6250865,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "GRASIM",
+                "ltp": 2415,
+                "percentageChange": -1.75,
+                "volume": 740041,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "BEL",
+                "ltp": 258.5,
+                "percentageChange": -1.69,
+                "volume": 29049716,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "JSWENERGY",
+                "ltp": 504,
+                "percentageChange": -5.68,
+                "volume": 4851730,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "BHEL",
+                "ltp": 187.4,
+                "percentageChange": -3.67,
+                "volume": 17826505,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "DIVISLAB",
+                "ltp": 5378.6,
+                "percentageChange": -3.55,
+                "volume": 588891,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "NHPC",
+                "ltp": 73.25,
+                "percentageChange": -2.03,
+                "volume": 15338930,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "RECLTD",
+                "ltp": 420,
+                "percentageChange": -1.98,
+                "volume": 14396638,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "DIXON",
+                "ltp": 14610.3,
+                "percentageChange": -5.33,
+                "volume": 741639,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "FEDERALBNK",
+                "ltp": 183.29,
+                "percentageChange": -4.11,
+                "volume": 43454549,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "COFORGE",
+                "ltp": 8490.1,
+                "percentageChange": -3.54,
+                "volume": 908977,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "AUROPHARMA",
+                "ltp": 1140.05,
+                "percentageChange": -3.08,
+                "volume": 720351,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "PERSISTENT",
+                "ltp": 5901.1,
+                "percentageChange": -2.64,
+                "volume": 681360,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "FEDERALBNK",
+                "ltp": 183.29,
+                "percentageChange": -4.11,
+                "volume": 43454549,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "RECLTD",
+                "ltp": 420,
+                "percentageChange": -1.98,
+                "volume": 14396638,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "MCX",
+                "ltp": 5508,
+                "percentageChange": -1.37,
+                "volume": 554032,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "HDFCAMC",
+                "ltp": 3671.55,
+                "percentageChange": -1.15,
+                "volume": 358687,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "ICICIGI",
+                "ltp": 1768.2,
+                "percentageChange": -0.59,
+                "volume": 910568,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            },
+            {
+                "symbol": "PFC",
+                "ltp": 387.5,
+                "percentageChange": -0.56,
+                "volume": 12499818,
+                "timestamp": "2025-01-28T15:54:04.521Z"
+            }
+        ],
+        "indices": [
+            {
+                "symbol": "NIFTY 50",
+                "ltp": 22957.25,
+                "percentageChange": "128.10 (0.56%)",
+                "timestamp": "2025-01-28T15:54:04.578Z"
+            },
+            {
+                "symbol": "NIFTY NEXT 50",
+                "ltp": 60912.1,
+                "percentageChange": "181.20 (0.30%)",
+                "timestamp": "2025-01-28T15:54:04.578Z"
+            },
+            {
+                "symbol": "NIFTY MIDCAP SELECT",
+                "ltp": 11644.4,
+                "percentageChange": "-77.80 (-0.66%)",
+                "timestamp": "2025-01-28T15:54:04.578Z"
+            },
+            {
+                "symbol": "NIFTY BANK",
+                "ltp": 48866.85,
+                "percentageChange": "802.20 (1.67%)",
+                "timestamp": "2025-01-28T15:54:04.578Z"
+            },
+            {
+                "symbol": "NIFTY FINANCIAL SERVICES",
+                "ltp": 22805.9,
+                "percentageChange": "422.80 (1.89%)",
+                "timestamp": "2025-01-28T15:54:04.578Z"
+            }
+        ],
+        "weekData": [
+            {
+                "label": "52-Week High",
+                "count": 6
+            },
+            {
+                "label": "52-Week Low",
+                "count": 538
+            }
+        ]
+    }
+}

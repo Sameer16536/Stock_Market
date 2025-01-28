@@ -9,7 +9,7 @@ export interface AggregatedData {
   weekData: any[];
 }
 
-export const useWebSocket = (channel: string): AggregatedData => {
+export const useWebSocket = (): AggregatedData => {
   const [data, setData] = useState<AggregatedData>({
     gainers: [],
     losers: [],
@@ -18,30 +18,30 @@ export const useWebSocket = (channel: string): AggregatedData => {
   });
 
   useEffect(() => {
-    if (!WebSocketService.isConnected(channel)) {
-      WebSocketService.connect(channel);
+    if (!WebSocketService.isConnected()) {
+      WebSocketService.connect();
     }
 
     const handleMessage = (message: any) => {
-      try {
-        // Ensure the message has the expected structure
-        if (message.type === "existing" && message.data) {
-          setData(message.data);
-        } else {
-          console.warn("Unexpected WebSocket message format:", message);
-        }
-      } catch (error) {
-        console.error("Error parsing WebSocket message:", error);
+      if (message.type === "existing" && message.data) {
+        setData(message.data);
+        console.log("✅ Received existing data from WebSocket:", message.data);
+      }else if (message.type === "update" && message.data) {
+        setData(message.data);
+        console.log("📈 Received updated data from WebSocket:", message.data);
+      } 
+      else {
+        console.warn("Unexpected WebSocket message:", message);
       }
     };
 
-    emitter.on(`${channel}-message`, handleMessage);
+    emitter.on("ws-message", handleMessage);
 
     return () => {
-      WebSocketService.disconnect(channel);
-      emitter.off(`${channel}-message`, handleMessage);
+      WebSocketService.disconnect();
+      emitter.off("ws-message", handleMessage);
     };
-  }, [channel]);
+  }, []);
 
   return data;
 };

@@ -16,7 +16,8 @@ interface StockTableProps {
 const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
     const gainers = gainersData
     const losers = losersData
-
+    console.log("Data receiveed in stock Table",gainers)
+    console.log("Data receiveed in stock Table",losers)
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold text-center mb-6">Gainers & Losers</h1>
@@ -39,7 +40,7 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
                             {gainers.length > 0 ? (
                                 gainers.map((stock) => (
                                     <tr
-                                        key={stock.symbol}
+                                    key={`${stock.symbol}-${stock.timestamp}`}
                                         className="hover:bg-gray-100 border-b last:border-none"
                                     >
                                         <td className="px-4 py-2">{stock.symbol}</td>
@@ -82,7 +83,7 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
                             {losers.length > 0 ? (
                                 losers.map((stock) => (
                                     <tr
-                                        key={stock.symbol}
+                                    key={`${stock.symbol}-${stock.timestamp}`}
                                         className="hover:bg-gray-100 border-b last:border-none"
                                     >
                                         <td className="px-4 py-2">{stock.symbol}</td>
