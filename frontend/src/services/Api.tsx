@@ -1,39 +1,96 @@
-import axios from "axios";
+import axios, { AxiosRequestHeaders } from "axios";
 
-// Base configuration for axios
-const api = axios.create({
-  baseURL: "http://localhost:8000", // Replace with your backend URL
-  timeout: 5000, // Optional: Adjust the timeout as needed
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+// Backend Base URL
+const IP_ADDRESS_BACKEND = "http://localhost:3000";
 
-// Define API routes
-const API = {
-  // Stock-related routes
-  getStockData: (symbol: string) => api.get(`/stocks/${symbol}`),
-  getStockHistory: (symbol: string) => api.get(`/stocks/${symbol}/history`),
-  buyStock: (data: {
-    userId: number;
-    symbol: string;
-    quantity: number;
-    price: number;
-  }) => api.post("/stocks/buy", data),
-  sellStock: (data: {
-    userId: number;
-    symbol: string;
-    quantity: number;
-    price: number;
-  }) => api.post("/stocks/sell", data),
+// Define the interface for API call parameters
+interface ApiCallParams<T = any> {
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+  url: string;
+  data?: T;
+  headers?: AxiosRequestHeaders;
+}
 
-  // User-related routes
-  getUserData: (userId: number) => api.get(`/user/profile/${userId}`),
-  createUser: (data: { name: string; email: string; password: string }) => api.post("/user/register", data),
+const apiCall = async <TResponse, TRequest = Record<string, any>>({
+  method,
+  url,
+  data,
+  headers,
+}: ApiCallParams<TRequest>): Promise<TResponse> => {
+  try {
+    const response = await axios({
+      method,
+      url: `${IP_ADDRESS_BACKEND}${url}`,
+      data,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        ...headers,
+      },
+    });
+    return response.data as TResponse;
+  } catch (error: any) {
+    console.error("API call error:", error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("user");
+      window.location.href = "/user/login";
+    }
 
-  // Transaction-related routes
-  getUserTransactions: (userId: number) =>
-    api.get(`/users/${userId}/transactions`),
+
+    throw error;
+  }
 };
 
-export default API;
+
+export const APIUtility = {
+
+  loginUser: (body: { email: string; password: string }) =>
+    apiCall<{ token: string; user: Record<string, any> }>({
+      method: "POST",
+      url: "/user/login",
+      data: body,
+    }),
+
+  registerUser: (body: { name: string; email: string; password: string }) =>
+    apiCall<{ message: string }>({
+      method: "POST",
+      url: "/user/register",
+      data: body,
+    }),
+
+  logoutUser: () =>
+    apiCall<{ message: string }>({
+      method: "GET",
+      url: "/user/logout",
+    }),
+
+  getUserProfile: () =>
+    apiCall<{ user: Record<string, any> }>({
+      method: "GET",
+      url: "/user/profile",
+    }),
+
+  // Transaction APIs
+  getTransactionHistory: (userId: number) =>
+    apiCall<{ transactions: Record<string, any>[] }>({
+      method: "GET",
+      url: `/user/${userId}/transactions`,
+    }),
+
+
+
+  deleteTransaction: (transactionId: number,userId:number) =>
+    apiCall<{ message: string }>({
+      method: "DELETE",
+      url: `/user/${userId}/transactions/${transactionId}`,
+    }),
+
+  // Stock APIs
+  getStockDetails: (stockSymbol: string) =>
+    apiCall<{ stock: Record<string, any> }>({
+      method: "GET",
+      url: `/stocks/${stockSymbol}`,
+    }),
+
+};
