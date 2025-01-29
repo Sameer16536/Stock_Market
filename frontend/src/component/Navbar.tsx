@@ -155,11 +155,26 @@ const NavBar = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                                </MenuItem>
-                            ))}
+                                      {settings.map((setting) => {
+            let path = `/${setting.toLowerCase().replace(/\s+/g, '-')}`;
+            
+            // Special case for "Logout"
+            if (setting === 'Logout') {
+                path = '/login'; // Redirect to login or handle logout logic
+            }
+
+            return (
+                <MenuItem
+                    key={setting}
+                    component={Link}
+                    to={path}
+                    onClick={handleCloseUserMenu}
+                >
+                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                </MenuItem>
+            );
+        })}
+
                         </Menu>
                     </Box>
                 </Toolbar>

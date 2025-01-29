@@ -8,6 +8,7 @@ import LiveStocks from './pages/LiveStocks'
 import PennyStock from './pages/PennyStocks'
 import SIP from './pages/SIP'
 import { useWebSocket,} from './websocket/useWebSocket'
+import Profile from './component/Profile'
 const App = () => {
   const { indices, gainers, losers, weekData } = useWebSocket();
   console.log({ indices, gainers, losers, weekData });
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/live-stocks" element={<LiveStocks />} />
           <Route path="/penny-stocks" element={<PennyStock />} />
           <Route path="/sip" element={<SIP />} />
+          <Route path='/profile' element={<Profile/>}/>
 
         </Routes>
       </BrowserRouter>
