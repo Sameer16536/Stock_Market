@@ -24,7 +24,14 @@ const Login: React.FC = () => {
         try {
             const response = await APIUtility.loginUser(payload)
             console.log(response)
-            navigate('/')
+  
+            if (!response.token) {
+                throw new Error("Sign-in failed!");
+            }
+    
+            localStorage.setItem("authToken", response.token);
+            
+            navigate("/");
             alert("Sign-in successful!");
         } catch (error: any) {
             alert(error.response?.data?.message || "Sign-in failed!");

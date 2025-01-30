@@ -21,16 +21,25 @@ const SignUpPage: React.FC = () => {
             name: formData.name,
             email: formData.email,
             password: formData.password
-        }
+        };
+    
         try {
-            const response = await APIUtility.registerUser(payload)
-            console.log(response,"Sign UP")
-            alert("User Registered Successfully");
-            navigate('/')
+            const response = await APIUtility.registerUser(payload);
+            console.log("Signup Response:", response);
+    
+            if (!response.token) {
+                throw new Error("Sign-up failed!");
+            }
+    
+            localStorage.setItem("authToken", response.token);
+            navigate("/");
+            alert("Sign-up successful!");
         } catch (error: any) {
-            alert(error.response?.data?.message || "Sign-up failed!");
+            console.error("Sign-up error:", error);
+            alert(error.response?.data?.error || "Sign-up failed!");
         }
     };
+    
 
     const handleGoogleAuth = () => {
         window.location.href = "http://localhost:5000/api/auth/google"; // Redirect to your backend's Google OAuth endpoint

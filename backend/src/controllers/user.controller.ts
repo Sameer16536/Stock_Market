@@ -34,10 +34,16 @@ export const registerUser = async (
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await createUser({ email, name, password: hashedPassword });
 
+    if(!newUser){
+      return res.status(500).json({ error: "Error creating user" });
+    }
+    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET as string, {
+      expiresIn: "1d",
+    });
     // Respond with success
     return res
       .status(201)
-      .json({ message: "User registered successfully", user: newUser });
+      .json({ message: "User registered successfully", user: newUser,token:token });
   } catch (error) {
     if (error instanceof zod.ZodError) {
       // Return validation errors

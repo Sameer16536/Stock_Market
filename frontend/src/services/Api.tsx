@@ -52,12 +52,13 @@ export const APIUtility = {
       data: body,
     }),
 
-  registerUser: (body: { name: string; email: string; password: string }) =>
-    apiCall<{ message: string }>({
-      method: "POST",
-      url: "/user/register",
-      data: body,
-    }),
+    registerUser: (body: { name: string; email: string; password: string }) =>
+      apiCall<{ message: string; user: { id: number; email: string; name: string }; token: string }>({
+        method: "POST",
+        url: "/user/register",
+        data: body,
+      }),
+  
 
   logoutUser: () =>
     apiCall<{ message: string }>({
