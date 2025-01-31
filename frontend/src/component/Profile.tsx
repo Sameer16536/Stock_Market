@@ -17,7 +17,8 @@ const Profile: React.FC = () => {
                 // setStocks(stocksResponse.data);
 
                 // Fetch the transaction history
-                const transactionsResponse = await APIUtility.getTransactionHistory(1); // Assuming this API is defined
+                const transactionsResponse = await APIUtility.getTransactionHistory(1);
+                console.log(transactionsResponse) // Assuming this API is defined
                 setTransactions(transactionsResponse.transactions);
             } catch (err: any) {
                 setError(err.response?.data?.message || "Failed to load profile data.");
@@ -87,7 +88,7 @@ const Profile: React.FC = () => {
                                 <tr key={index} className="text-center">
                                     <td className="border border-gray-300 p-2">{new Date(transaction.createdAt).toLocaleString()}</td>
                                     <td className="border border-gray-300 p-2">{transaction.stock.symbol}</td>
-                                    <td className="border border-gray-300 p-2">{transaction.action}</td>
+                                    <td className="border border-gray-300 p-2">{transaction.type}</td>
                                     <td className="border border-gray-300 p-2">{transaction.quantity}</td>
                                     <td className="border border-gray-300 p-2">${transaction.price.toFixed(2)}</td>
                                 </tr>
