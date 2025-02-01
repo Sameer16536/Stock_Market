@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { APIUtility } from "../services/Api";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const Profile: React.FC = () => {
     const [stocks, setStocks] = useState<any[]>([]);
     const [transactions, setTransactions] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
+    const user = useSelector((state:RootState)=>state.user)
+    console.log("User creds dikhe?",user)
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -17,7 +21,7 @@ const Profile: React.FC = () => {
                 // setStocks(stocksResponse.data);
 
                 // Fetch the transaction history
-                const transactionsResponse = await APIUtility.getTransactionHistory(1);
+                const transactionsResponse = await APIUtility.getTransactionHistory(user.id);
                 console.log(transactionsResponse) // Assuming this API is defined
                 setTransactions(transactionsResponse.transactions);
             } catch (err: any) {

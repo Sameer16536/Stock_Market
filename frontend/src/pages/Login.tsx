@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import { APIUtility } from "../services/Api";
+import {useDispatch} from 'react-redux'
+import {loginSuccess} from '../redux/userSlice'
 
 const Login: React.FC = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -23,12 +26,16 @@ const Login: React.FC = () => {
         }
         try {
             const response = await APIUtility.loginUser(payload)
-            console.log(response)
+            console.log("Login karne peeeeeeeeeeee-------",response)
   
             if (!response.token) {
                 throw new Error("Sign-in failed!");
             }
-    
+            dispatch(loginSuccess({
+                id: response.user.id,
+                name:response.user.name,
+                email:response.user.email
+            }))
             localStorage.setItem("authToken", response.token);
             
             navigate("/");
