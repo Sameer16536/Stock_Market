@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 
 const pages = ['Home', 'Live Stocks', 'Penny Stocks', 'Guide', 'SIP'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -19,6 +19,14 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const NavBar = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    // Check login status on component mount
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        setIsUserLoggedIn(!!token);
+    }, []);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -34,6 +42,11 @@ const NavBar = () => {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+    const handleLogout = () => {
+        localStorage.removeItem('authToken'); // Clear token
+        setIsUserLoggedIn(false); // Update state
+        navigate('/login'); // Redirect to login
     };
 
     return (
@@ -133,50 +146,40 @@ const NavBar = () => {
                         })}
                     </Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                                      {settings.map((setting) => {
-            let path = `/${setting.toLowerCase().replace(/\s+/g, '-')}`;
-            
-            // Special case for "Logout"
-            if (setting === 'Logout') {
-                path = '/login'; // Redirect to login or handle logout logic
-            }
-
-            return (
-                <MenuItem
-                    key={setting}
-                    component={Link}
-                    to={path}
-                    onClick={handleCloseUserMenu}
-                >
-                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                </MenuItem>
-            );
-        })}
-
-                        </Menu>
-                    </Box>
+                    {isUserLoggedIn ? (
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                keepMounted
+                                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                {settings.map((setting) => (
+                                    <MenuItem
+                                        key={setting}
+                                        onClick={setting === 'Logout' ? handleLogout : handleCloseUserMenu}
+                                        component={setting === 'Logout' ? 'button' : Link}
+                                        to={setting !== 'Logout' ? `/${setting.toLowerCase().replace(/\s+/g, '-')}` : undefined}
+                                    >
+                                        <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </Box>
+                    ) : (
+                        <Button component={Link} to="/login" sx={{ color: 'white' }}>
+                            Login
+                        </Button>
+                    )}
                 </Toolbar>
             </Container>
         </AppBar>
