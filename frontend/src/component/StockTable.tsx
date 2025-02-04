@@ -16,8 +16,15 @@ interface StockTableProps {
 const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
     const gainers = gainersData
     const losers = losersData
-    console.log("Data receiveed in stock Table",gainers)
-    console.log("Data receiveed in stock Table",losers)
+    const currentTime = Date.now(); // Get the current timestamp in milliseconds
+    const dateObject = new Date(currentTime);
+    const hours = String(dateObject.getHours()).padStart(2, '0');
+    const minutes = String(dateObject.getMinutes()).padStart(2, '0');
+    const seconds = String(dateObject.getSeconds()).padStart(2, '0');
+    console.log("Data received in stock table at:", `${hours}:${minutes}:${seconds}`);
+    console.log("Gainers:", gainers);
+    console.log("Losers:", losers);
+    
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold text-center mb-6">Gainers & Losers</h1>

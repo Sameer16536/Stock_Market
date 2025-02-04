@@ -11,8 +11,6 @@ import { useWebSocket,} from './websocket/useWebSocket'
 import Profile from './component/Profile'
 import {useState,useEffect} from 'react'
 const App = () => {
-  const { indices, gainers, losers, weekData } = useWebSocket();
-  console.log({ indices, gainers, losers, weekData });
   const [isUserLoggedIn,setIsUserLoggedIn] = useState(false)
   const token = localStorage.getItem('authToken')
   useEffect(() => {
