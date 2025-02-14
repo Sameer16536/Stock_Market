@@ -21,6 +21,7 @@ model User {
   createdAt   DateTime      @default(now())
   Transaction Transaction[]
   credits   Float         @default(10000)
+  watchlist   UserStockWatchlist[]
 }
 
 model Stock {
@@ -30,6 +31,17 @@ model Stock {
   history     StockHistory[]
   createdAt   DateTime       @default(now())
   Transaction Transaction[]
+  usersWatchlist UserStockWatchlist[]
+}
+
+model UserStockWatchlist {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  stockId   Int
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stock     Stock  @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, stockId]) // Prevents duplicate watchlist entries
 }
 
 model StockHistory {

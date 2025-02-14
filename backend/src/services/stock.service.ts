@@ -24,7 +24,7 @@ export async function scrapeStockHistory(stockSymbol: string) {
 
   try {
     const stockHistoryUrl = `https://www.nseindia.com/get-quotes/equity?symbol=${stockSymbol}`;
-    console.log('Navigating to:', stockHistoryUrl);
+    // console.log('Navigating to:', stockHistoryUrl);
 
     // Navigate to the URL
     await page.goto(stockHistoryUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
@@ -118,9 +118,9 @@ export  const saveStockData = async (stockSymbol: string, priceInfo: any) => {
             data: priceInfo,  // Save priceInfo as a JSON object in the `Stock` table
           },
         });
-        console.log('Stock created:', stock);
+        // console.log('Stock created:', stock);
       } else {
-        console.log('Stock already exists:', stock);
+        // console.log('Stock already exists:', stock);
       }
     } catch (error) {
       console.error('Error saving stock data:', error);

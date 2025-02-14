@@ -31,7 +31,7 @@ export const createWebSocketServer = (httpServer: any) => {
       };
 
       ws.send(JSON.stringify({ type: "existing", data: existingData }));
-      console.log("✅ Sent existing data to client:", existingData);
+      // console.log("✅ Sent existing data to client:", existingData);
     } catch (error) {
       console.error("❌ Error fetching existing data:", error);
     }
@@ -54,11 +54,11 @@ export const createWebSocketServer = (httpServer: any) => {
   // Listen for new stock updates from Redis
   redisSubscriber.on("message", (channel, message) => {
     if (channel === "nse:stock-updates") {
-      console.log("🔔 Received stock update from Redis:", message);
+      // console.log("🔔 Received stock update from Redis:", message);
 
       try {
         const update = JSON.parse(message);
-        console.log("📈 Parsed update object:", update);
+        // console.log("📈 Parsed update object:", update);
 
         // Update aggregated data based on the Redis key
         if (update.key === "nse:indices" && Array.isArray(update.value)) {
@@ -71,7 +71,7 @@ export const createWebSocketServer = (httpServer: any) => {
           aggregatedData.weekData = update.value;
         }
 
-        console.log("✅ Updated aggregated data:", aggregatedData);
+        // console.log("✅ Updated aggregated data:", aggregatedData);
 
         // Send updated stock data to **all** connected clients
         const consolidatedData = {
@@ -87,7 +87,7 @@ export const createWebSocketServer = (httpServer: any) => {
           }
         });
 
-        console.log("📤 Sent consolidated data to all clients:", consolidatedData);
+        // console.log("📤 Sent consolidated data to all clients:", consolidatedData);
       } catch (error) {
         console.error("❌ Error processing Redis message:", error);
       }

@@ -152,3 +152,122 @@ export const getUserProfile = async (
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+export const getUserStockWatchlist = async (
+  req: Request & { user?: { id: number; email: string; name: string } },
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    // Fetch user's watchlist using the join table
+    const watchlist = await prisma.userStockWatchlist.findMany({
+      where: { userId: req.user.id },
+      include: { stock: true },
+    });
+
+    return res.status(200).json({ userId: req.user.id, watchlist });
+  } catch (error) {
+    console.error("Error Fetching User stock watchlist", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const postUserStockWatchlist = async (
+  req: Request & { user?: { id: number; email: string; name: string } },
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const { stockId } = req.body;
+
+    // Check if stock exists
+    const stock = await prisma.stock.findUnique({
+      where: { id: Number(stockId) },
+    });
+
+    if (!stock) {
+      return res.status(404).json({ error: "Stock not found" });
+    }
+
+    // Check if already in watchlist
+    const existingEntry = await prisma.userStockWatchlist.findUnique({
+      where: {
+        userId_stockId: { userId: req.user.id, stockId: Number(stockId) },
+      },
+    });
+
+    if (existingEntry) {
+      return res.status(400).json({ error: "Stock already in watchlist" });
+    }
+
+    // Add to watchlist using join table
+    await prisma.userStockWatchlist.create({
+      data: {
+        userId: req.user.id,
+        stockId: Number(stockId),
+      },
+    });
+
+    return res.status(201).json({ message: "Stock added to watchlist" });
+  } catch (error) {
+    console.error("Error Adding Stock to Watchlist", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const deleteUserStockWatchlist = async (
+  req: Request & { user?: { id: number; email: string; name: string } },
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const { stockId } = req.body;
+
+    // Check if stock exists
+    const stock = await prisma.stock.findUnique({
+      where: { id: Number(stockId) },
+    });
+
+    if (!stock) {
+      return res.status(404).json({ error: "Stock not found" });
+    }
+
+    // Check if stock is in watchlist
+    const watchlistEntry = await prisma.userStockWatchlist.findUnique({
+      where: {
+        userId_stockId: { userId: req.user.id, stockId: Number(stockId) },
+      },
+    });
+
+    if (!watchlistEntry) {
+      return res.status(400).json({ error: "Stock not in watchlist" });
+    }
+
+    // Remove stock from watchlist
+    await prisma.userStockWatchlist.delete({
+      where: {
+        userId_stockId: { userId: req.user.id, stockId: Number(stockId) },
+      },
+    });
+
+    return res.status(200).json({ message: "Stock removed from watchlist" });
+  } catch (error) {
+    console.error("Error Removing Stock from Watchlist", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+

@@ -20,16 +20,16 @@ export  const processRedisData = async () => {
     const keys = ["nse:gainers", "nse:losers"]; 
     const structuredData = await getStockDataFromRedis(keys);
   
-    console.log("Structured Data:", structuredData);
+    // console.log("Structured Data:", structuredData);
   
     const symbols = extractSymbols(structuredData);
-    console.log("Extracted Symbols:", symbols);
+    // console.log("Extracted Symbols:", symbols);
   
     // Example: Call scrapeStockHistory for each symbol
     for (const symbol of symbols) {
       try {
         await scrapeStockHistory(symbol);
-        console.log(`Stock history scraping for ${symbol} completed successfully.`);
+        // console.log(`Stock history scraping for ${symbol} completed successfully.`);
       } catch (error) {
         console.error(`Error scraping history for ${symbol}:`, error);
       }
