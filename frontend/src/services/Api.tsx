@@ -110,8 +110,25 @@ export const APIUtility = {
       data: body,
       url: `/stocks/${stockSymbol}/sell`
     })
-  }
+  },
+  getUserWatchlist: () =>
+    apiCall<{ watchlist: Record<string, any>[] }>({
+      method: "GET",
+      url: "/user/watchlist",
+    }),
 
-  
+  addToWatchlist: (body: { stockSymbol: string }) =>
+    apiCall<{ message: string }>({
+      method: "POST",
+      url: "/user/watchlist",
+      data: body,
+    }),
 
+  removeFromWatchlist: (stockSymbol: string) =>
+    apiCall<{ message: string }>({
+      method: "DELETE",
+      url: `/user/watchlist/${stockSymbol}`,
+    }),
 };
+
+

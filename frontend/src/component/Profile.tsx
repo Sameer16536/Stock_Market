@@ -15,12 +15,6 @@ const Profile: React.FC = () => {
         const fetchProfileData = async () => {
             try {
                 setLoading(true);
-
-                // Fetch the user's stocks
-                // const stocksResponse = await APIUtility.getTransactionHistory(1) // Assuming this API is defined
-                // setStocks(stocksResponse.data);
-
-                // Fetch the transaction history
                 const transactionsResponse = await APIUtility.getTransactionHistory(user.id);
                 console.log(transactionsResponse) // Assuming this API is defined
                 setTransactions(transactionsResponse.transactions);
@@ -48,6 +42,27 @@ const Profile: React.FC = () => {
         getUserProfileData()
     },[])
 
+    useEffect(() => {
+        const fetchWatchlist = async () => {
+            try {
+                const response = await APIUtility.getUserWatchlist(user.id);
+                setWatchlist(response.watchlist);
+            } catch (err: any) {
+                setError(err.response?.data?.message || "Failed to load watchlist.");
+            }
+        };
+
+        fetchWatchlist();
+    }, []);
+
+    const removeFromWatchlist = async (stockId: number) => {
+        try {
+            await APIUtility.removeFromWatchlist(user.id, stockId);
+            setWatchlist((prevWatchlist) => prevWatchlist.filter((stock) => stock.id !== stockId));
+        } catch (err: any) {
+            setError(err.response?.data?.message || "Failed to remove stock from watchlist.");
+        }
+    };
 
 
     if (loading) {
@@ -68,6 +83,43 @@ const Profile: React.FC = () => {
                 <p><strong>Email:</strong> {profileData.email}</p>
                 <p><strong>Name:</strong> {profileData.name}</p>
                 <p><strong>Credits:</strong> {profileData.credits}</p>
+            </div>
+
+
+             {/* Watchlist Section */}
+             <div className="mt-6">
+                <h2 className="text-xl font-semibold mb-4">Watchlist</h2>
+                {watchlist.length > 0 ? (
+                    <table className="w-full border-collapse border border-gray-300">
+                        <thead>
+                            <tr className="bg-gray-100">
+                                <th className="border border-gray-300 p-2">Stock Symbol</th>
+                                <th className="border border-gray-300 p-2">Stock Name</th>
+                                <th className="border border-gray-300 p-2">Current Price</th>
+                                <th className="border border-gray-300 p-2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {watchlist.map((stock) => (
+                                <tr key={stock.id} className="text-center">
+                                    <td className="border border-gray-300 p-2">{stock.symbol}</td>
+                                    <td className="border border-gray-300 p-2">{stock.name}</td>
+                                    <td className="border border-gray-300 p-2">${stock.price.toFixed(2)}</td>
+                                    <td className="border border-gray-300 p-2">
+                                        <button
+                                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                                            onClick={() => removeFromWatchlist(stock.id)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p className="text-gray-600">No stocks in your watchlist.</p>
+                )}
             </div>
 
             {/* Transaction History */}
