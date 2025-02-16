@@ -189,6 +189,4 @@ For any questions or feedback, feel free to reach out at:
 - Email: [sameermarathe15@gmail.com](mailto:sameermarathe15@gmail.com)  
 - GitHub: [Sameer16536](https://github.com/Sameer16536)
 
-```
-
 ---
