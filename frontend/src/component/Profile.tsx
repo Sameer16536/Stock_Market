@@ -6,6 +6,7 @@ import { RootState } from "../redux/store";
 const Profile: React.FC = () => {
     const [profileData,setProfileData] = useState({});
     const [transactions, setTransactions] = useState<any[]>([]);
+    const [watchlist, setWatchlist] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
     const user = useSelector((state:RootState)=>state.user)
@@ -46,6 +47,7 @@ const Profile: React.FC = () => {
         const fetchWatchlist = async () => {
             try {
                 const response = await APIUtility.getUserWatchlist(user.id);
+                console.log("Watchlist",response)
                 setWatchlist(response.watchlist);
             } catch (err: any) {
                 setError(err.response?.data?.message || "Failed to load watchlist.");
@@ -56,8 +58,12 @@ const Profile: React.FC = () => {
     }, []);
 
     const removeFromWatchlist = async (stockId: number) => {
+        const payload = {
+            userId : user.id,
+            stockId : stockId
+        }
         try {
-            await APIUtility.removeFromWatchlist(user.id, stockId);
+            await APIUtility.removeFromWatchlist(payload);
             setWatchlist((prevWatchlist) => prevWatchlist.filter((stock) => stock.id !== stockId));
         } catch (err: any) {
             setError(err.response?.data?.message || "Failed to remove stock from watchlist.");
@@ -100,22 +106,23 @@ const Profile: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {watchlist.map((stock) => (
-                                <tr key={stock.id} className="text-center">
-                                    <td className="border border-gray-300 p-2">{stock.symbol}</td>
-                                    <td className="border border-gray-300 p-2">{stock.name}</td>
-                                    <td className="border border-gray-300 p-2">${stock.price.toFixed(2)}</td>
-                                    <td className="border border-gray-300 p-2">
-                                        <button
-                                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                                            onClick={() => removeFromWatchlist(stock.id)}
-                                        >
-                                            Remove
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
+  {watchlist.map((item) => (
+    <tr key={item.id} className="text-center">
+      <td className="border border-gray-300 p-2 font-semibold">{item.stock.symbol}</td>
+      <td className="border border-gray-300 p-2">{item.stock.data.upperBand}</td>
+      <td className="border border-gray-300 p-2">{item.stock.data.priceBand}</td>
+      <td className="border border-gray-300 p-2">
+        <button
+          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-all"
+          onClick={() => removeFromWatchlist(item.stock.id)}
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
                     </table>
                 ) : (
                     <p className="text-gray-600">No stocks in your watchlist.</p>
