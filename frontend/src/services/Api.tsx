@@ -124,10 +124,11 @@ export const APIUtility = {
       data: body,
     }),
 
-  removeFromWatchlist: (stockSymbol: string) =>
+  removeFromWatchlist: (body:{stockSymbol: string}) =>
     apiCall<{ message: string }>({
       method: "DELETE",
-      url: `/user/watchlist/${stockSymbol}`,
+      url: `/user/watchlist`,
+      data:body
     }),
 };
 
