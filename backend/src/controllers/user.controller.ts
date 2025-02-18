@@ -235,7 +235,7 @@ export const deleteUserStockWatchlist = async (
     }
 
     const { stockId } = req.body;
-
+  
     // Check if stock exists
     const stock = await prisma.stock.findUnique({
       where: { id: Number(stockId) },
