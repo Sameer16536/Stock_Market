@@ -1,5 +1,7 @@
 import React from "react";
-
+import { APIUtility } from "../services/Api";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 interface StockData {
     symbol: string;
     ltp: number;
@@ -24,7 +26,19 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
     console.log("Data received in stock table at:", `${hours}:${minutes}:${seconds}`);
     console.log("Gainers:", gainers);
     console.log("Losers:", losers);
-    
+    const user = useSelector((state:RootState)=>state.user)
+
+    const addToWatchlist = async(stockId:number)=>{
+        const payload = {
+            stockId : stockId
+        }
+        try {
+            const response = await APIUtility.addToWatchlist(payload)
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold text-center mb-6">Gainers & Losers</h1>
@@ -41,11 +55,12 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
                                 <th className="px-4 py-2">LTP</th>
                                 <th className="px-4 py-2">% Change</th>
                                 <th className="px-4 py-2">Volume</th>
+                                <th className="px-4 py-2 ">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {gainers.length > 0 ? (
-                                gainers.map((stock) => (
+                                gainers.map((stock,id) => (
                                     <tr
                                     key={`${stock.symbol}-${stock.timestamp}`}
                                         className="hover:bg-gray-100 border-b last:border-none"
@@ -56,6 +71,14 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
                                             +{stock.percentageChange}%
                                         </td>
                                         <td className="px-4 py-2">{stock.volume}</td>
+                                        <td className="px-4 py-2">
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                    onClick={() => addToWatchlist(id)}
+                  >
+                    Add to Watchlist
+                  </button>
+                </td>
                                     </tr>
                                 ))
                             ) : (
@@ -84,11 +107,12 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
                                 <th className="px-4 py-2">LTP</th>
                                 <th className="px-4 py-2">% Change</th>
                                 <th className="px-4 py-2">Volume</th>
+                                <th className="px-4 py-2">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {losers.length > 0 ? (
-                                losers.map((stock) => (
+                                losers.map((stock,id) => (
                                     <tr
                                     key={`${stock.symbol}-${stock.timestamp}`}
                                         className="hover:bg-gray-100 border-b last:border-none"
@@ -99,6 +123,14 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData,losersData }) => {
                                             {stock.percentageChange}%
                                         </td>
                                         <td className="px-4 py-2">{stock.volume}</td>
+                                        <td className="px-4 py-2">
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                    onClick={() => addToWatchlist(id)}
+                  >
+                    Add to Watchlist
+                  </button>
+                </td>
                                     </tr>
                                 ))
                             ) : (
