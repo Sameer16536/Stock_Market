@@ -1,7 +1,9 @@
 import React from "react";
-
+import NavBar from './Navbar'
 const StockMarketGuide: React.FC = () => {
     return (
+        <>
+            <NavBar/>
         <div className="bg-white p-6 rounded shadow-md max-w-4xl mx-auto">
             <h1 className="text-2xl font-bold mb-4 text-blue-600">Stock Market Guide</h1>
             <p className="text-gray-700 mb-4">
@@ -56,6 +58,7 @@ const StockMarketGuide: React.FC = () => {
                 </p>
             </div>
         </div>
+        </>
     );
 };
 

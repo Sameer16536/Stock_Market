@@ -57,7 +57,8 @@ const NavBar = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="#"
+                        href="/"
+                        onClick={()=>navigate('/')}
                         sx={{
                             mr: 92,
                             display: { xs: 'none', md: 'flex' },
