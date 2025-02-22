@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export const getSingleStockData = async (req: Request, res: Response) => {
   try {
-    const { symbol } = req.params;
+    const { symbol } = req.body;
 
     const stock = await prisma.stock.findUnique({
       where: { symbol },
@@ -32,7 +32,7 @@ export const getSingleStockData = async (req: Request, res: Response) => {
 
 export const getStockHistoryData = async (req: Request, res: Response) => {
   try {
-    const { symbol } = req.params;
+    const { symbol } = req.body;
 
     const stock = await prisma.stock.findUnique({
       where: { symbol },
@@ -141,9 +141,8 @@ export const getRecentHistoryForAllStocks = async (
 
 export const buyStock = async (req: Request, res: Response) => {
   try {
-    const { userId,  quantity, price } = req.body;
-    const { symbol } = req.params;
-
+    const {symbol, userId,  quantity, price } = req.body;
+    
     // Validate stock existence
     const stock = await prisma.stock.findUnique({
       where: { symbol },
@@ -198,8 +197,8 @@ export const buyStock = async (req: Request, res: Response) => {
  */
 export const sellStock = async (req: Request, res: Response) => {
   try {
-    const { userId,quantity, price } = req.body;
-    const { symbol } = req.params;
+    const { symbol,userId,quantity, price } = req.body;
+    
 
     // Validate stock existence
     const stock = await prisma.stock.findUnique({

@@ -94,21 +94,20 @@ export const APIUtility = {
       url: `/stocks/${stockSymbol}`,
     }),
   
-  buyStock: (body: { stockSymbol: string }) => {
-    const {stockSymbol} = body
+  buyStock: (body: { stockSymbol: string ,quantity:number,price:number}) => {
     apiCall({
       method: "POST",
       data:body,
-      url:`/stocks/${stockSymbol}/buy`
+      url:`/stocks/buy`,
+
     })
   },
 
-  sellStock: (body: { stockSymbol: string }) => {
-    const { stockSymbol } = body
+  sellStock: (body: { stockSymbol: string,quantity:number,price:number }) => {
     apiCall({
       method: "POST",
       data: body,
-      url: `/stocks/${stockSymbol}/sell`
+      url: `/stockssell`
     })
   },
   getUserWatchlist: () =>

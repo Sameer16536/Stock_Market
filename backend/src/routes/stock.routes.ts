@@ -13,12 +13,12 @@ const router = express.Router();
 
 // Routes for stock data
 router.get("/recent-history", authMiddleware, getRecentHistoryForAllStocks);
-router.get("/:symbol", authMiddleware, getSingleStockData);
-router.get("/:symbol/history", authMiddleware, getStockHistoryData);
+router.get("/singleHistory", authMiddleware, getSingleStockData);
+router.get("/history", authMiddleware, getStockHistoryData);
 
 // Routes for stock trading
-router.post("/:symbol/buy", authMiddleware, buyStock);
-router.post("/:symbol/sell", authMiddleware, sellStock);
+router.post("/buy", authMiddleware, buyStock);
+router.post("/sell", authMiddleware, sellStock);
 
 
 export default router;
