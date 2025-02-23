@@ -9,6 +9,7 @@ import Index from "../component/Index";
 import StockTable from "../component/StockTable";
 import Week52Data from "../component/Week52Data";
 import { useWebSocket } from "../websocket/useWebSocket";
+import { useSelector } from "react-redux";
 
 type Gainer = {
   symbol: string;
@@ -44,7 +45,13 @@ const Home = () => {
   const [stockindices, setStockIndices] = useState<Index[]>([]);
   const [stockweekData, setStockWeekData] = useState<WeekData[]>([]);
   const navigate = useNavigate();
-
+  const user = useSelector((state: RootState) => state.user);
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true);
+    };
+  }
+  ,[user]);
   const handleSwitch = () => {
     setChartView((prevView) => (prevView === "multi" ? "single" : "multi"));
   };

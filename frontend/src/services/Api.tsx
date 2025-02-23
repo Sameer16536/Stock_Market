@@ -110,10 +110,11 @@ export const APIUtility = {
       url: `/stockssell`
     })
   },
-  getUserWatchlist: () =>
+  getUserWatchlist: (body:{userId:number}) =>
     apiCall<{ watchlist: Record<string, any>[] }>({
       method: "GET",
       url: "/user/watchlist",
+      data:body
     }),
 
   addToWatchlist: (body: { stockSymbol: string }) =>
