@@ -44,7 +44,6 @@ The system architecture is designed to be scalable, robust, and optimized for re
 - **Purpose**: Persists historical data and transactional records.
 - **Features**:
   - **PostgreSQL** for storing user data, trades, and application metadata.
-  - **Time-series database (e.g., TimescaleDB)** for storing stock prices and trading volumes.
 
 ---
 
