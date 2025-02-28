@@ -23,22 +23,26 @@ export const useWebSocket = (): AggregatedData => {
     }
     const currentTime = Date.now(); // Get the current timestamp in milliseconds
     const dateObject = new Date(currentTime);
-    const hours = String(dateObject.getHours()).padStart(2, '0');
-    const minutes = String(dateObject.getMinutes()).padStart(2, '0');
-    const seconds = String(dateObject.getSeconds()).padStart(2, '0');
-    
+    const hours = String(dateObject.getHours()).padStart(2, "0");
+    const minutes = String(dateObject.getMinutes()).padStart(2, "0");
+    const seconds = String(dateObject.getSeconds()).padStart(2, "0");
 
     const handleMessage = (message: any) => {
       if (message.type === "existing" && message.data) {
         setData(message.data);
-        console.log("Received Existing data from useWebsocket at:", `${hours}:${minutes}:${seconds}`);
+        console.log(
+          "Received Existing data from useWebsocket at:",
+          `${hours}:${minutes}:${seconds}`
+        );
         console.log("✅ Received existing data from WebSocket:", message.data);
-      }else if (message.type === "update" && message.data) {
+      } else if (message.type === "update" && message.data) {
         setData(message.data);
-        console.log("Received Updated data from useWebsocket at:", `${hours}:${minutes}:${seconds}`);
+        console.log(
+          "Received Updated data from useWebsocket at:",
+          `${hours}:${minutes}:${seconds}`
+        );
         console.log("📈 Received updated data from WebSocket:", message.data);
-      } 
-      else {
+      } else {
         console.warn("Unexpected WebSocket message:", message);
       }
     };

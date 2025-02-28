@@ -3,10 +3,7 @@ import { useEffect } from "react";
 
 const emitter = new EventEmitter();
 
-export const useSub = (
-  event: string,
-  callback: (data: any) => void
-): void => {
+export const useSub = (event: string, callback: (data: any) => void): void => {
   useEffect(() => {
     emitter.on(event, callback);
     return () => {

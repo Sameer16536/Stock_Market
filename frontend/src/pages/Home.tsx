@@ -49,9 +49,8 @@ const Home = () => {
   useEffect(() => {
     if (user) {
       setIsLoggedIn(true);
-    };
-  }
-  ,[user]);
+    }
+  }, [user]);
   const handleSwitch = () => {
     setChartView((prevView) => (prevView === "multi" ? "single" : "multi"));
   };
@@ -94,14 +93,13 @@ const Home = () => {
       setStockIndices(indices.value || []); // Ensure we pass the array only
     }
   }, [indices]);
-  
+
   useEffect(() => {
     if (weekData) {
-      console.log("week Data:",weekData); // Debug to confirm structure
+      console.log("week Data:", weekData); // Debug to confirm structure
       setStockWeekData(weekData.value || []); // Ensure we pass the array only
     }
   }, [weekData]);
-  
 
   useEffect(() => {
     if (!isLoggedIn) {
