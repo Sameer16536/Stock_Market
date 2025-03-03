@@ -128,7 +128,7 @@ const NavBar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Stock Bro
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
