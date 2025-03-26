@@ -1,4 +1,4 @@
-# Real-Time Stock Market Trading App
+# StockBro
 
 This is a real-time stock market trading application, inspired by platforms like Zerodha, Groww, and Upstox. The app is designed to provide real-time stock price updates, enable trading, and provide insights into market data using APIs and WebSocket connections.
 
