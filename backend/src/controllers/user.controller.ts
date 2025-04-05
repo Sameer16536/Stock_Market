@@ -40,10 +40,17 @@ export const registerUser = async (
     const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET as string, {
       expiresIn: "1d",
     });
+    const refreshToken = jwt.sign(
+      { id: newUser.id },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "7d" }
+    );
+    
+
     // Respond with success
     return res
       .status(201)
-      .json({ message: "User registered successfully", user: newUser,token:token });
+      .json({ message: "User registered successfully", user: newUser,token:token , refreshToken:refreshToken });
   } catch (error) {
     if (error instanceof zod.ZodError) {
       // Return validation errors
@@ -85,6 +92,13 @@ export const loginUser = async (
       expiresIn: "1d",
     });
 
+    // Generate refresh token
+    const refreshToken  = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "7d" }
+    );
+
     // Set token as cookie
     res.cookie("token", token, {
       httpOnly: true,
@@ -98,6 +112,7 @@ export const loginUser = async (
       message: "User logged in successfully",
       user: { id: user.id, email: user.email, name: user.name },
       token,
+      refreshToken,
     });
   } catch (error) {
     console.error("Error logging in user:", error);
@@ -271,3 +286,33 @@ export const deleteUserStockWatchlist = async (
 };
 
 
+export const refreshAccessToken = async(req: Request, res: Response)=>{
+  try{
+    const refreshToken = req.cookies.refreshToken || req.body.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(401).json({ error: "Refresh token missing" });
+    }
+
+    // Verify refresh token
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET as string) as { id: number };
+
+    if (!decoded?.id) {
+      return res.status(401).json({ error: "Invalid refresh token" });
+    }
+
+    // Optionally: Verify user exists in DB
+    const user = await prisma.user.findUnique({ where: { id: decoded.id } });
+    if (!user) return res.status(401).json({ error: "Invalid user" });
+
+    // Generate new access token
+    const newAccessToken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET as string, {
+      expiresIn: "1d",
+    });
+
+    return res.status(200).json({ accessToken: newAccessToken });
+  }catch(error){
+    console.error("Error Refreshing Access Token", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
