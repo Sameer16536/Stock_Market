@@ -360,3 +360,16 @@ export const refreshAccessToken = [authRateLimiter,async(req: Request, res: Resp
     return res.status(500).json({ error: "Internal Server Error" });
   }
 }]
+
+
+export const cleanExpiredTokens = async () => {
+  const result = await prisma.refreshToken.deleteMany({
+    where: {
+      OR: [
+        { revoked: true },
+        { expiresAt: { lt: new Date() } }
+      ]
+    }
+  });
+  console.log(`🧹 Cleaned ${result.count} expired/blacklisted tokens`);
+};

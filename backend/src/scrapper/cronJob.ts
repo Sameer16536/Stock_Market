@@ -1,9 +1,10 @@
 import cron from 'node-cron';
 import { scrapeNSEIndia } from './scrapper';
 import { processRedisData } from '../services/postgres.service';
+import { cleanExpiredTokens } from '../controllers/user.controller';
 
 cron.schedule('*/1 * * * *', async () => {
-    console.log('Running scrapper every 5 minutes');
+    console.log('Running scrapper every 1 minute');
     try{
         await scrapeNSEIndia()
         console.log('Scrapper ran successfully');
@@ -29,6 +30,7 @@ cron.schedule('*/1 * * * *', async () => {
     console.log('Running scraper based on the schedule (Monday at midnight)');
     try {
       await processRedisData();
+      await cleanExpiredTokens()
       console.log('Scheduled scraper run completed successfully');
     } catch (err) {
       console.error('Error in running scheduled scraper:', err);
