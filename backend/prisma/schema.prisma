@@ -14,53 +14,54 @@ datasource db {
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
-  name        String
-  email       String        @unique
-  password    String
-  createdAt   DateTime      @default(now())
-  Transaction Transaction[]
-  credits   Float         @default(10000)
-  watchlist   UserStockWatchlist[]
+  id            Int                  @id @default(autoincrement())
+  name          String
+  email         String               @unique
+  password      String
+  createdAt     DateTime             @default(now())
+  Transaction   Transaction[]
+  credits       Float                @default(10000)
+  watchlist     UserStockWatchlist[]
+  refreshTokens RefreshToken[]
 }
 
 model Stock {
-  id          Int            @id @default(autoincrement())
-  symbol      String         @unique
-  data        Json
-  history     StockHistory[]
-  createdAt   DateTime       @default(now())
-  Transaction Transaction[]
+  id             Int                  @id @default(autoincrement())
+  symbol         String               @unique
+  data           Json
+  history        StockHistory[]
+  createdAt      DateTime             @default(now())
+  Transaction    Transaction[]
   usersWatchlist UserStockWatchlist[]
 }
 
 model UserStockWatchlist {
-  id        Int    @id @default(autoincrement())
-  userId    Int
-  stockId   Int
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stock     Stock  @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  stockId Int
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stock   Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
 
   @@unique([userId, stockId]) // Prevents duplicate watchlist entries
 }
 
 model StockHistory {
-  id            Int      @id @default(autoincrement())
-  stockId       Int
-  stock         Stock    @relation(fields: [stockId], references: [id])
-  date          DateTime // Date for the historic data
-  openPrice     Float // Opening price of the stock
-  closePrice    Float // Closing price of the stock
-  highPrice     Float // Highest price of the day
-  lowPrice      Float // Lowest price of the day
-  volume        Int // Volume traded
-  tradeInfo     Json? // Include tradeInfo as a Json type
-  priceInfo     Json? // Include priceInfo as a Json type
+  id             Int      @id @default(autoincrement())
+  stockId        Int
+  stock          Stock    @relation(fields: [stockId], references: [id])
+  date           DateTime // Date for the historic data
+  openPrice      Float // Opening price of the stock
+  closePrice     Float // Closing price of the stock
+  highPrice      Float // Highest price of the day
+  lowPrice       Float // Lowest price of the day
+  volume         Int // Volume traded
+  tradeInfo      Json? // Include tradeInfo as a Json type
+  priceInfo      Json? // Include priceInfo as a Json type
   securitiesInfo Json? // Include securitiesInfo as a Json type
-  createdAt     DateTime @default(now())
+  createdAt      DateTime @default(now())
+
   @@unique([stockId, date])
 }
-
 
 model Transaction {
   id        Int      @id @default(autoincrement())
@@ -72,4 +73,14 @@ model Transaction {
   quantity  Int
   price     Float // Price at which the stock was bought/sold
   createdAt DateTime @default(now())
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+  revoked   Boolean  @default(false)
+  expiresAt DateTime
 }

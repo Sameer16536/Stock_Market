@@ -4,14 +4,32 @@ import zod from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { createUser } from "../services/user.service";
-
+import rateLimit from "express-rate-limit";
 const prisma = new PrismaClient();
+
+//Rate limit
+export const authRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests, please try again later.",
+})
 
 const userInputValidation = zod.object({
   email: zod.string().email("Invalid email address"),
   password: zod.string().min(6, "Password must be at least 6 characters long"),
   name: zod.string().min(2, "Name must be at least 2 characters long"),
 });
+
+const generateAccessToken = (user:any)=>{
+  return jwt.sign({ id: user.id, email: user.email, name: user.name }, process.env.JWT_SECRET as string, {
+    expiresIn: "1d",
+  });
+}
+const generateRefreshToken = (user:any)=>{
+  return jwt.sign({ id: user.id, email: user.email, name: user.name }, process.env.JWT_SECRET as string, {
+    expiresIn: "7d",
+  });
+}
 
 // Register User
 export const registerUser = async (
@@ -37,20 +55,28 @@ export const registerUser = async (
     if(!newUser){
       return res.status(500).json({ error: "Error creating user" });
     }
-    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET as string, {
-      expiresIn: "1d",
+    const token = generateAccessToken(newUser);
+    const refreshToken = generateRefreshToken(newUser);
+
+  await prisma.refreshToken.create({
+    data:{
+      userId:newUser.id,
+      token:refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+    }
+  })    
+    // Set refresh token as cookie
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
-    const refreshToken = jwt.sign(
-      { id: newUser.id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "7d" }
-    );
-    
 
     // Respond with success
     return res
       .status(201)
-      .json({ message: "User registered successfully", user: newUser,token:token , refreshToken:refreshToken });
+      .json({ message: "User registered successfully", user: newUser,token:token  });
   } catch (error) {
     if (error instanceof zod.ZodError) {
       // Return validation errors
@@ -62,7 +88,7 @@ export const registerUser = async (
 };
 
 // Login User
-export const loginUser = async (
+export const loginUser = [authRateLimiter,async (
   req: Request & { user?: { id: number; email: string; name: string } },
   res: Response,
   next: NextFunction
@@ -88,23 +114,25 @@ export const loginUser = async (
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
-      expiresIn: "1d",
-    });
+    const token =generateAccessToken(user);
 
     // Generate refresh token
-    const refreshToken  = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "7d" }
-    );
+    const refreshToken  = generateRefreshToken(user);
+
+    await prisma.refreshToken.create({  
+      data:{
+        userId:user.id,
+        token:refreshToken,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      }
+    })
 
     // Set token as cookie
-    res.cookie("token", token, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      secure: true,
       sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     // Send success response
@@ -112,13 +140,12 @@ export const loginUser = async (
       message: "User logged in successfully",
       user: { id: user.id, email: user.email, name: user.name },
       token,
-      refreshToken,
     });
   } catch (error) {
     console.error("Error logging in user:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
-};
+}];
 
 // Logout User
 export const logoutUser = async (
@@ -127,12 +154,14 @@ export const logoutUser = async (
   next: NextFunction
 ): Promise<Response | void> => {
   try {
-    // Clear the token cookie
-    res.clearCookie("token");
-    return res.status(200).json({ message: "User logged out successfully" });
-  } catch (error) {
-    console.error("Error logging out user:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    const token = req.cookies.refreshToken;
+    if (token) {
+      await prisma.refreshToken.update({ where: { token }, data: { revoked: true } });
+    }
+    res.clearCookie("refreshToken");
+    return res.status(200).json({ message: "Logged out" });
+  } catch (err) {
+    return res.status(500).json({ error: "Logout failed" });
   }
 };
 
@@ -286,33 +315,48 @@ export const deleteUserStockWatchlist = async (
 };
 
 
-export const refreshAccessToken = async(req: Request, res: Response)=>{
+export const refreshAccessToken = [authRateLimiter,async(req: Request, res: Response)=>{
   try{
-    const refreshToken = req.cookies.refreshToken || req.body.refreshToken;
+    const oldToken = req.cookies.refreshToken;
 
-    if (!refreshToken) {
-      return res.status(401).json({ error: "Refresh token missing" });
+    if(!oldToken){
+      return res.status(401).json({error:"No refresh Token"});
     }
 
-    // Verify refresh token
-    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET as string) as { id: number };
+    const decoded = jwt.verify(oldToken, process.env.JWT_SECRET as string) as {
+      id: number};
+     
+      const existing = await prisma.refreshToken.findUnique({ where: { token: oldToken }, include: { user: true } });
+      if (!existing || existing.revoked || existing.expiresAt < new Date()) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+  
+      // Revoke old
+      await prisma.refreshToken.update({
+        where: { token: oldToken },
+        data: { revoked: true }
+      });
+  
+      // Issue new
+      const newToken = generateRefreshToken(decoded.id);
+      await prisma.refreshToken.create({
+        data: {
+          userId: decoded.id,
+          token: newToken,
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        }
+      });
 
-    if (!decoded?.id) {
-      return res.status(401).json({ error: "Invalid refresh token" });
-    }
-
-    // Optionally: Verify user exists in DB
-    const user = await prisma.user.findUnique({ where: { id: decoded.id } });
-    if (!user) return res.status(401).json({ error: "Invalid user" });
-
-    // Generate new access token
-    const newAccessToken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET as string, {
-      expiresIn: "1d",
-    });
-
-    return res.status(200).json({ accessToken: newAccessToken });
+      const newAcessToken = generateAccessToken(existing.user);
+      res.cookie("refreshToken", newToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+      return res.status(200).json({ message: "Token refreshed successfully", acessToken: newAcessToken });
   }catch(error){
     console.error("Error Refreshing Access Token", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
-}
+}]
