@@ -7,7 +7,6 @@ import StockMarketGuide from './component/Guide'
 import LiveStocks from './pages/LiveStocks'
 import PennyStock from './pages/PennyStocks'
 import SIP from './pages/SIP'
-import { useWebSocket,} from './websocket/useWebSocket'
 import Profile from './component/Profile'
 import {useState,useEffect} from 'react'
 const App = () => {
