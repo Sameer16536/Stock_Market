@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
-import StockList from "../component/StockList";
-import StockChart from "../component/StockChart";
-import StockMultiLineChart from "../component/StockMultiLineChart";
+import { useEffect, useState } from "react";
+
 import { Modal } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import NavBar from "../component/Navbar";
 import Index from "../component/Index";
 import StockTable from "../component/StockTable";
 import Week52Data from "../component/Week52Data";
 import { useWebSocket } from "../websocket/useWebSocket";
 import { useSelector } from "react-redux";
+import { RootState } from "../redux/store"; 
 
 type Gainer = {
   symbol: string;
@@ -33,11 +32,10 @@ type WeekData = {
   count: number;
 };
 
+
 const Home = () => {
   const { gainers, losers, indices, weekData } = useWebSocket();
   console.log(gainers);
-  const [selectedStock, setSelectedStock] = useState<string | null>(null);
-  const [chartView, setChartView] = useState<"single" | "multi">("multi");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(false);
   const [showModal, setShowModal] = useState<boolean | null>(false);
   const [stockGainers, setStockGainers] = useState<Gainer[]>([]);
@@ -51,20 +49,6 @@ const Home = () => {
       setIsLoggedIn(true);
     }
   }, [user]);
-  const handleSwitch = () => {
-    setChartView((prevView) => (prevView === "multi" ? "single" : "multi"));
-  };
-  const handleStockSelect = (stockName: string) => {
-    setSelectedStock(stockName);
-    setChartView("single");
-  };
-  // useEffect(() => {
-  //     const { gainers, losers, indices,weekData } = sampleData[0].data;
-  //     setGainers(gainers.value);
-  //     setLosers(losers.value);
-  //     setIndices(indices.value);
-  //     setWeekData(weekData.value)
-  // },[])
 
   useEffect(() => {
     // setStockGainers(gainers);
@@ -74,25 +58,32 @@ const Home = () => {
   }, [losers, indices, weekData]);
 
   useEffect(() => {
-    if (gainers && gainers.value) {
-      console.log("Gainers Data:", gainers); // Debug to confirm structure
-      setStockGainers(gainers.value || []); // Ensure we pass the array only
+    if (gainers && Array.isArray(gainers.value)) {
+      console.log("Gainers Data:", gainers.value);
+      setStockGainers(gainers.value);
+    } else {
+      setStockGainers([]);
     }
   }, [gainers]);
-
+  
   useEffect(() => {
-    if (losers) {
-      console.log("losers Data:", losers); // Debug to confirm structure
-      setStockLosers(losers.value || []); // Ensure we pass the array only
+    if (losers && Array.isArray(losers.value)) {
+      console.log("Losers Data:", losers.value);
+      setStockLosers(losers.value);
+    } else {
+      setStockLosers([]);
     }
   }, [losers]);
-
+  
   useEffect(() => {
-    if (indices) {
-      console.log("indices Data:", indices); // Debug to confirm structure
-      setStockIndices(indices.value || []); // Ensure we pass the array only
+    if (indices && Array.isArray(indices.value)) {
+      console.log("Indices Data:", indices.value);
+      setStockIndices(indices.value);
+    } else {
+      setStockIndices([]);
     }
   }, [indices]);
+  
 
   useEffect(() => {
     if (weekData) {
@@ -119,36 +110,18 @@ const Home = () => {
     <div className="min-h-screen bg-slate-800">
       <NavBar />
       <main className="p-4">
-        <button
-          onClick={handleSwitch}
-          className="mb-4 px-4 py-2 bg-yellow-500 text-white rounded"
-        >
-          {chartView === "multi"
-            ? "Switch to Single Stock View"
-            : "Switch to Multi-Stock View"}
-        </button>
+        
         <Index data={stockindices} />
         <Week52Data weekData={stockweekData} />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Stock List */}
-          <div className="col-span-1">
-            <StockList onSelect={handleStockSelect} />
-          </div>
-          {/* Chart */}
-          {/* <div className="col-span-2">
-                        {chartView === "multi" || !selectedStock ? (
-                            <StockMultiLineChart stocks={stocks} />
-                        ) : (
-                            <StockChart stockName={selectedStock} data={mockChartData} />
-                        )}
-                    </div> */}
+
         </div>
 
         <StockTable gainersData={stockGainers} losersData={stocklosers} />
       </main>
       {/* Modal for Login */}
       <Modal
-        // @ts-ignore
+      //@ts-expect-error "Modal" is not a valid prop
         open={showModal}
         onClose={() => setShowModal(false)}
         aria-labelledby="login-modal-title"
@@ -168,7 +141,9 @@ const Home = () => {
             Go to Login
           </button>
         </div>
-      </Modal>
+      </Modal>-107.05 (-0.46%)
+
+
     </div>
   );
 };

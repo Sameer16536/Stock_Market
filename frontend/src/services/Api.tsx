@@ -9,6 +9,7 @@ interface ApiCallParams<T = any> {
   url: string;
   data?: T;
   headers?: AxiosRequestHeaders;
+  credentials?: boolean
 }
 
 const apiCall = async <TResponse, TRequest = Record<string, any>>({
@@ -16,6 +17,7 @@ const apiCall = async <TResponse, TRequest = Record<string, any>>({
   url,
   data,
   headers,
+  credentials = true,
 }: ApiCallParams<TRequest>): Promise<TResponse> => {
   try {
     const response = await axios({
