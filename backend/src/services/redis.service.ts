@@ -7,9 +7,6 @@ export const getStockDataFromRedis = async (keys: string[]): Promise<{ [key: str
         // Fetch all keys concurrently
         const data = await Promise.all(keys.map((key) => redis.get(key)));
 
-        // Log raw Redis data for debugging
-        // console.log("Raw Redis Data:", data);
-
         // Parse and extract 'value' field
         return keys.reduce((acc, key, index) => {
             try {

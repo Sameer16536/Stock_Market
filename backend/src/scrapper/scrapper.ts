@@ -129,7 +129,6 @@ export async function scrapeNSEIndia() {
 
     // Save scraped data to a JSON file
     await writeJSON(OUTPUT_FILE, stocks, { spaces: 2 });
-    console.log(`Data saved to ${OUTPUT_FILE}`);
     //Store the data in Redis
     await storeInRedis('nse:gainers', gainers);
     await storeInRedis('nse:losers', losers);
@@ -141,8 +140,3 @@ export async function scrapeNSEIndia() {
     await browser.close();
   }
 }
-
-// // Run the scraper
-// scrapeNSEIndia()
-//   .then(() => console.log('Scraping completed successfully.'))
-//   .catch((error) => console.error('Scraper encountered an error:', error));

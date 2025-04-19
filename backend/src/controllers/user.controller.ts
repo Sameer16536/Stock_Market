@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 //Rate limit
 export const authRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // Limit each IP to 100 requests per windowMs
+  max: 10, 
   message: "Too many requests, please try again later.",
 })
 

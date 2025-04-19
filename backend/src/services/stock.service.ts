@@ -24,7 +24,6 @@ export async function scrapeStockHistory(stockSymbol: string) {
 
   try {
     const stockHistoryUrl = `https://www.nseindia.com/get-quotes/equity?symbol=${stockSymbol}`;
-    // console.log('Navigating to:', stockHistoryUrl);
 
     // Navigate to the URL
     await page.goto(stockHistoryUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
@@ -84,7 +83,6 @@ const tradeInfo = await page.evaluate(() => ({
       securitiesInfo,
     };
     await writeJSON(OUTPUT_FILE, fullStockData);
-    console.log('Data saved to:', OUTPUT_FILE);
 
     // Save the stock info data to the database
     await saveStockData(stockSymbol, priceInfo);
@@ -96,11 +94,6 @@ const tradeInfo = await page.evaluate(() => ({
     await browser.close();
   }
 }
-
-// scrapeStockHistory('HINDUNILVR')
-//   .then(() => console.log('Stock history scraping completed successfully.'))
-//   .catch((error) => console.error('Stock history scraper encountered an error:', error));
-
 
 
 export  const saveStockData = async (stockSymbol: string, priceInfo: any) => {
@@ -118,10 +111,7 @@ export  const saveStockData = async (stockSymbol: string, priceInfo: any) => {
             data: priceInfo,  // Save priceInfo as a JSON object in the `Stock` table
           },
         });
-        // console.log('Stock created:', stock);
-      } else {
-        // console.log('Stock already exists:', stock);
-      }
+      } 
     } catch (error) {
       console.error('Error saving stock data:', error);
       throw new Error('Failed to save stock data.');
@@ -205,8 +195,6 @@ export  const saveStockHistory = async (stockSymbol: string, stockData: any) => 
           ...stockHistoryData, // Create a new record if none exists
         },
       });
-  
-      console.log(`Stock history for "${stockSymbol}" saved successfully.`);
     } catch (error) {
       console.error('Error saving stock history:', error);
       throw new Error('Failed to save stock history.');
