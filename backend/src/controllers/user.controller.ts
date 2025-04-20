@@ -231,11 +231,11 @@ export const postUserStockWatchlist = async (
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { stockId } = req.body;
+    const { stockSymbol } = req.body;
 
     // Check if stock exists
     const stock = await prisma.stock.findUnique({
-      where: { id: Number(stockId) },
+      where: { symbol: stockSymbol },
     });
 
     if (!stock) {
@@ -245,10 +245,12 @@ export const postUserStockWatchlist = async (
     // Check if already in watchlist
     const existingEntry = await prisma.userStockWatchlist.findUnique({
       where: {
-        userId_stockId: { userId: req.user.id, stockId: Number(stockId) },
+        userId_stockSymbol: {
+          userId: req.user.id,
+          stockSymbol,
+        },
       },
     });
-
     if (existingEntry) {
       return res.status(400).json({ error: "Stock already in watchlist" });
     }
@@ -257,7 +259,7 @@ export const postUserStockWatchlist = async (
     await prisma.userStockWatchlist.create({
       data: {
         userId: req.user.id,
-        stockId: Number(stockId),
+        stockSymbol,
       },
     });
 
@@ -278,11 +280,11 @@ export const deleteUserStockWatchlist = async (
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { stockId } = req.body;
+    const { stockSymbol } = req.body;
   
     // Check if stock exists
     const stock = await prisma.stock.findUnique({
-      where: { id: Number(stockId) },
+      where: { symbol:stockSymbol },
     });
 
     if (!stock) {
@@ -292,7 +294,10 @@ export const deleteUserStockWatchlist = async (
     // Check if stock is in watchlist
     const watchlistEntry = await prisma.userStockWatchlist.findUnique({
       where: {
-        userId_stockId: { userId: req.user.id, stockId: Number(stockId) },
+        userId_stockSymbol: {
+          userId: req.user.id,
+          stockSymbol,
+        },
       },
     });
 
@@ -303,7 +308,10 @@ export const deleteUserStockWatchlist = async (
     // Remove stock from watchlist
     await prisma.userStockWatchlist.delete({
       where: {
-        userId_stockId: { userId: req.user.id, stockId: Number(stockId) },
+        userId_stockSymbol: {
+          userId: req.user.id,
+          stockSymbol,
+        },
       },
     });
 

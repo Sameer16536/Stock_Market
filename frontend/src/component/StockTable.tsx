@@ -31,9 +31,9 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData, losersData }) => {
   const user = useSelector((state: RootState) => state.user);
   console.log("User in StockTable", user);
 
-  const addToWatchlist = async (id:number) => {
+  const addToWatchlist = async (stockSymbol:string) => {
       const payload = {
-        stockId: id,
+        stockSymbol: stockSymbol,
       };
       try {
         console.log("Adding to watchlist", payload);
@@ -64,7 +64,7 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData, losersData }) => {
             </thead>
             <tbody>
               {gainers.length > 0 ? (
-                gainers.map((stock,id) => (
+                gainers.map((stock) => (
                   <tr
                     key={`${stock.symbol}-${stock.timestamp}`}
                     className="hover:bg-gray-100 border-b last:border-none"
@@ -78,7 +78,7 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData, losersData }) => {
                     <td className="px-4 py-2">
                       <button
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                        onClick={() => addToWatchlist(id)}
+                        onClick={() => addToWatchlist(stock.symbol)}
                       >
                         Add to Watchlist
                       </button>
@@ -116,7 +116,7 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData, losersData }) => {
             </thead>
             <tbody>
               {losers.length > 0 ? (
-                losers.map((stock, id) => (
+                losers.map((stock) => (
                   <tr
                     key={`${stock.symbol}-${stock.timestamp}`}
                     className="hover:bg-gray-100 border-b last:border-none"
@@ -130,7 +130,7 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData, losersData }) => {
                     <td className="px-4 py-2">
                       <button
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                        onClick={() => addToWatchlist(id)}
+                        onClick={() => addToWatchlist(stock.symbol)}
                       >
                         Add to Watchlist
                       </button>
