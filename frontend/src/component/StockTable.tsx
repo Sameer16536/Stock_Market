@@ -28,19 +28,21 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData, losersData }) => {
     `${hours}:${minutes}:${seconds}`
   );
   console.log("Gainers:", gainers);
-  console.log("Losers:", losers);
   const user = useSelector((state: RootState) => state.user);
+  console.log("User in StockTable", user);
 
-  const addToWatchlist = async (stockId: number) => {
-    const payload = {
-      stockId: stockId,
+  const addToWatchlist = async (id:number) => {
+      const payload = {
+        stockId: id,
+      };
+      try {
+        console.log("Adding to watchlist", payload);
+        const response = await APIUtility.addToWatchlist(payload);
+        console.log(response, "added to watchlist");
+      } catch (error) {
+        console.log(error);
+      }
     };
-    try {
-      const response = await APIUtility.addToWatchlist(payload);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold text-center mb-6">Gainers & Losers</h1>
@@ -62,7 +64,7 @@ const StockTable: React.FC<StockTableProps> = ({ gainersData, losersData }) => {
             </thead>
             <tbody>
               {gainers.length > 0 ? (
-                gainers.map((stock, id) => (
+                gainers.map((stock,id) => (
                   <tr
                     key={`${stock.symbol}-${stock.timestamp}`}
                     className="hover:bg-gray-100 border-b last:border-none"
