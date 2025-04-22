@@ -69,7 +69,7 @@ const NavBar = () => {
               textDecoration: "none",
             }}
           >
-            Real Time Stocks
+            Stock Bro
           </Typography>
 
           <Box

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { APIUtility } from "../services/Api";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import NavBar from "./Navbar";
 
 const Profile: React.FC = () => {
   const [profileData, setProfileData] = useState({});
@@ -12,68 +13,66 @@ const Profile: React.FC = () => {
   const user = useSelector((state: RootState) => state.user);
   console.log("User creds dikhe?", user);
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        setLoading(true);
-        const transactionsResponse = await APIUtility.getTransactionHistory(
-          user.id
-        );
-        console.log(transactionsResponse); // Assuming this API is defined
-        setTransactions(transactionsResponse.transactions);
-      } catch (err: any) {
-        setError(err.response?.data?.message || "Failed to load profile data.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  //API calls-->
+  const fetchProfileData = async () => {
+    try {
+      setLoading(true);
+      const transactionsResponse = await APIUtility.getTransactionHistory(
+        user.id
+      );
+      console.log(transactionsResponse); // Assuming this API is defined
+      setTransactions(transactionsResponse.transactions);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Failed to load profile data.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchProfileData();
-  }, []);
+  const getUserProfileData = async () => {
+    try {
+      const response = await APIUtility.getUserProfile();
+      console.log("User Profile response--->", response);
+      setProfileData(response);
+    } catch (err: any) {
+      setError(err.response.data.message || "Failed to load Profile Data");
+    }
+  };
 
-  useEffect(() => {
-    const getUserProfileData = async () => {
-      try {
-        const response = await APIUtility.getUserProfile();
-        console.log("User Profile response--->", response);
-        setProfileData(response);
-      } catch (err: any) {
-        setError(err.response.data.message || "Failed to load Profile Data");
-      }
-    };
-    getUserProfileData();
-  }, []);
-
-  useEffect(() => {
-    const fetchWatchlist = async () => {
-      try {
-        const response = await APIUtility.getUserWatchlist(user.id);
-        console.log("Watchlist", response);
-        setWatchlist(response.watchlist);
-      } catch (err: any) {
-        setError(err.response?.data?.message || "Failed to load watchlist.");
-      }
-    };
-
-    fetchWatchlist();
-  }, []);
-
-  const removeFromWatchlist = async (stockId: number) => {
+  const fetchWatchlist = async () => {
+    try {
+      const response = await APIUtility.getUserWatchlist(user.id);
+      console.log("Watchlist response--->", response);
+      setWatchlist(response.watchlist);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Failed to load watchlist.");
+    }
+  };
+  const removeFromWatchlist = async (stockSymbol: string) => {
     const payload = {
       userId: user.id,
-      stockId: stockId,
+      stockSymbol: stockSymbol,
     };
     try {
       await APIUtility.removeFromWatchlist(payload);
       setWatchlist((prevWatchlist) =>
-        prevWatchlist.filter((item) => item.stock.id !== stockId)
+      prevWatchlist.filter((item) => item.stock.symbol !== stockSymbol)
       );
     } catch (err: any) {
       setError(
-        err.response?.data?.message || "Failed to remove stock from watchlist."
+      err.response?.data?.message || "Failed to remove stock from watchlist."
       );
     }
   };
+
+  // Fetching data when the component mounts
+  useEffect(() => {
+    fetchWatchlist();
+    getUserProfileData();
+    fetchProfileData();
+  }, []);
+
+
 
   if (loading) {
     return <div className="text-center mt-10">Loading...</div>;
@@ -84,6 +83,8 @@ const Profile: React.FC = () => {
   }
 
   return (
+    <>      <NavBar/>
+
     <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">User Profile</h1>
 
@@ -130,7 +131,7 @@ const Profile: React.FC = () => {
                     <td className="p-3 text-center">
                       <button
                         className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-                        onClick={() => removeFromWatchlist(item.stock.id)}
+                        onClick={() => removeFromWatchlist(item.stock.symbol)}
                       >
                         Remove
                       </button>
@@ -189,6 +190,7 @@ const Profile: React.FC = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
