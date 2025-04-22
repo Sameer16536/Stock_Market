@@ -68,7 +68,7 @@ export const registerUser = async (
     // Set refresh token as cookie
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -130,7 +130,7 @@ export const loginUser = [authRateLimiter,async (
     // Set token as cookie
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -355,14 +355,14 @@ export const refreshAccessToken = [authRateLimiter,async(req: Request, res: Resp
         }
       });
 
-      const newAcessToken = generateAccessToken(existing.user);
+      const newAccessToken = generateAccessToken(existing.user);
       res.cookie("refreshToken", newToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
-      return res.status(200).json({ message: "Token refreshed successfully", acessToken: newAcessToken });
+      return res.status(200).json({ message: "Token refreshed successfully", accessToken: newAccessToken });
   }catch(error){
     console.error("Error Refreshing Access Token", error);
     return res.status(500).json({ error: "Internal Server Error" });

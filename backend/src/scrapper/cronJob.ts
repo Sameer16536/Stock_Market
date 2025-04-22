@@ -5,7 +5,7 @@ import { cleanExpiredTokens } from '../controllers/user.controller';
 
 cron.schedule('*/1 * * * *', async () => {
     try{
-        await scrapeNSEIndia()
+        // await scrapeNSEIndia()
     }
     catch(err){
         console.error('Error in running scrapper', err);
@@ -15,7 +15,7 @@ cron.schedule('*/1 * * * *', async () => {
 // Run the scraper immediately
 (async () => {
     try {
-      await processRedisData();
+      // await processRedisData();
     } catch (err) {
       console.error("Error during initial scraper run:",  err);
     }
@@ -24,7 +24,7 @@ cron.schedule('*/1 * * * *', async () => {
   // Schedule the cron job
   cron.schedule('0 0 * * 1', async () => {
     try {
-      await processRedisData();
+      // await processRedisData();
       await cleanExpiredTokens()
     } catch (err) {
       console.error('Error in running scheduled scraper:', err);

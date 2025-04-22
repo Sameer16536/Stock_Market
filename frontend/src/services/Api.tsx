@@ -24,24 +24,52 @@ const apiCall = async <TResponse, TRequest = Record<string, any>>({
       method,
       url: `${IP_ADDRESS_BACKEND}${url}`,
       data,
+      withCredentials: credentials,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
         ...headers,
       },
     });
     return response.data as TResponse;
   } catch (error: any) {
     console.error("API call error:", error);
-    if (error.response?.status === 401) {
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("user");
-      window.location.href = "/user/login";
+      // If 401 and it's not already a refresh call, try refreshing the token
+      if (
+        error.response?.status === 401 &&
+        url !== "/user/refresh-token"
+      ) {
+        try {
+          const refreshResponse = await axios.get(`${IP_ADDRESS_BACKEND}/user/refresh-token`, {
+            withCredentials: true,
+          });
+  
+          const newToken = refreshResponse.data.acessToken;
+          localStorage.setItem("accessToken", newToken);
+  
+          // Retry the original request with new token
+          const retry = await axios({
+            method,
+            url: `${IP_ADDRESS_BACKEND}${url}`,
+            data,
+            withCredentials: credentials,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${newToken}`,
+              ...headers,
+            },
+          });
+  
+          return retry.data as TResponse;
+        } catch (refreshErr) {
+          console.error("Refresh token failed:", refreshErr);
+          localStorage.removeItem("accessToken");
+          window.location.href = "/login";
+        }
+      }
+  
+      throw error;
     }
-
-
-    throw error;
-  }
 };
 
 

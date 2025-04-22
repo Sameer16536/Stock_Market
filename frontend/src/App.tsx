@@ -9,11 +9,17 @@ import PennyStock from './pages/PennyStocks'
 import SIP from './pages/SIP'
 import Profile from './component/Profile'
 import {useState,useEffect} from 'react'
+import { APIUtility } from './services/Api'
 const App = () => {
   const [isUserLoggedIn,setIsUserLoggedIn] = useState(false)
-  const token = localStorage.getItem('authToken')
   useEffect(() => {
-    setIsUserLoggedIn(!!token);
+    APIUtility.getUserProfile()
+    .then(() => {
+      console.log('User is logged in')
+      setIsUserLoggedIn(true)})
+    .catch(() => {
+      setIsUserLoggedIn(false)
+    })
   }, []);
   
   return (

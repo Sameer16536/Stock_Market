@@ -15,14 +15,15 @@ export const authMiddleware = (
   next: NextFunction
 ) => {
   try {
-    const token =
-      req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
+    const authHeader = req.header("Authorization");
 
-    if (!token) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "Unauthorized: No token provided" });
     }
 
+    const token = authHeader.replace("Bearer ", "");
     const secret = process.env.JWT_SECRET as string;
+
     const decoded = jwt.verify(token, secret) as {
       id: string;
       email: string;
