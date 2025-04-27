@@ -6,7 +6,7 @@ class WebSocketService {
   connect() {
     if (this.socket) return; // Prevent multiple connections
 
-    this.socket = new WebSocket("ws://localhost:3000");
+    this.socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL as string);
 
     this.socket.onopen = () => emitter.emit("ws-connected");
     this.socket.onmessage = (event) =>

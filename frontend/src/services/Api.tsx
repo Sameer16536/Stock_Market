@@ -1,7 +1,7 @@
 import axios, { AxiosRequestHeaders } from "axios";
 
 // Backend Base URL
-const IP_ADDRESS_BACKEND = "http://localhost:3000";
+const IP_ADDRESS_BACKEND = import.meta.env.VITE_BACKEND_URL ;
 
 // Define the interface for API call parameters
 interface ApiCallParams<T = any> {
@@ -37,7 +37,8 @@ const apiCall = async <TResponse, TRequest = Record<string, any>>({
       // If 401 and it's not already a refresh call, try refreshing the token
       if (
         error.response?.status === 401 &&
-        url !== "/user/refresh-token"
+        url !== "/user/refresh-token" &&
+        window.location.pathname !== "/login"
       ) {
         try {
           const refreshResponse = await axios.get(`${IP_ADDRESS_BACKEND}/user/refresh-token`, {
