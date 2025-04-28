@@ -26,12 +26,15 @@ const NavBar = () => {
   // Check login status on component mount
   useEffect(() => {
     const checkUserLoggedIn =async () => {
+     try{
       const response  = await APIUtility.getUserProfile()
       if (response ) {
         setIsUserLoggedIn(true);
-      } else {
-        setIsUserLoggedIn(false);
       }
+      }catch (error) {
+        console.error("Error checking login status:", error); 
+        setIsUserLoggedIn(false); 
+     }
     }
     checkUserLoggedIn();
   }, []);
