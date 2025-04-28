@@ -27,7 +27,6 @@ const apiCall = async <TResponse, TRequest = Record<string, any>>({
       withCredentials: credentials,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`,
         ...headers,
       },
     });
@@ -45,8 +44,7 @@ const apiCall = async <TResponse, TRequest = Record<string, any>>({
             withCredentials: true,
           });
   
-          const newToken = refreshResponse.data.acessToken;
-          localStorage.setItem("accessToken", newToken);
+          const newToken = refreshResponse.data.refreshToken;
   
           // Retry the original request with new token
           const retry = await axios({
@@ -56,15 +54,14 @@ const apiCall = async <TResponse, TRequest = Record<string, any>>({
             withCredentials: credentials,
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${newToken}`,
               ...headers,
+              Authorization: `Bearer ${newToken}`,
             },
           });
   
           return retry.data as TResponse;
         } catch (refreshErr) {
           console.error("Refresh token failed:", refreshErr);
-          localStorage.removeItem("accessToken");
           window.location.href = "/login";
         }
       }

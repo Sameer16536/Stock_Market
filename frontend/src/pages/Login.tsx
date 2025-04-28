@@ -25,7 +25,6 @@ const Login: React.FC = () => {
     };
     try {
       const response = await APIUtility.loginUser(payload);
-      console.log("Login karne peeeeeeeeeeee-------", response);
 
       if (!response.token) {
         throw new Error("Sign-in failed!");
@@ -37,7 +36,6 @@ const Login: React.FC = () => {
           email: response.user.email,
         })
       );
-      localStorage.setItem("authToken", response.token);
 
       navigate("/");
       alert("Sign-in successful!");

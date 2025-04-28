@@ -20,8 +20,6 @@ export const createWebSocketServer = (httpServer: any) => {
   wss.on("connection", async (ws) => {
     console.warn("Client connected");
     subscribers.add(ws);
-
-    // ✅ Use `redisClient` to fetch existing data (not `redisSubscriber`)
     try {
       const existingData = {
         gainers: JSON.parse((await redisClient.get("nse:gainers")) || "[]"),

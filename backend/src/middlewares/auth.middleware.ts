@@ -15,16 +15,13 @@ export const authMiddleware = (
   next: NextFunction
 ) => {
   try {
-    const authHeader = req.header("Authorization");
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    const refreshToken  = req.cookies.refreshToken;
+    if (!refreshToken) {
       return res.status(401).json({ error: "Unauthorized: No token provided" });
     }
-
-    const token = authHeader.replace("Bearer ", "");
     const secret = process.env.JWT_SECRET as string;
 
-    const decoded = jwt.verify(token, secret) as {
+    const decoded = jwt.verify(refreshToken, secret) as {
       id: string;
       email: string;
       name: string;

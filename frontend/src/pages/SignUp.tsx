@@ -31,7 +31,6 @@ const SignUpPage: React.FC = () => {
         throw new Error("Sign-up failed!");
       }
 
-      localStorage.setItem("authToken", response.token);
       navigate("/");
       alert("Sign-up successful!");
     } catch (error: any) {

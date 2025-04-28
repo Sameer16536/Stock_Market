@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link, useNavigate } from "react-router-dom";
+import { APIUtility } from "../services/Api";
 
 const pages = ["Home", "Live Stocks", "Penny Stocks", "Guide", "SIP"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -24,8 +25,15 @@ const NavBar = () => {
 
   // Check login status on component mount
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    setIsUserLoggedIn(!!token);
+    const checkUserLoggedIn =async () => {
+      const response  = await APIUtility.getUserProfile()
+      if (response ) {
+        setIsUserLoggedIn(true);
+      } else {
+        setIsUserLoggedIn(false);
+      }
+    }
+    checkUserLoggedIn();
   }, []);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -44,7 +52,6 @@ const NavBar = () => {
     setAnchorElUser(null);
   };
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); // Clear token
     setIsUserLoggedIn(false); // Update state
     navigate("/login"); // Redirect to login
   };
